@@ -4,10 +4,11 @@ namespace EndPoints.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class IndexController : ControllerBase
+public class HomeController : ControllerBase
 {
     [HttpGet]
-    IActionResult Index()
+    [Route("[action]")]
+    public IActionResult Index()
     {
         return Ok(new { Success = true, Data = "Тест" });
     }
