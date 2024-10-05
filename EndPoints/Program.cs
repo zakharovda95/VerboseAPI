@@ -1,16 +1,21 @@
+using static EndPoints.AppSettings.SwaggerSettings;
+
 var builder = WebApplication.CreateBuilder(args);
+
 builder.Services.AddControllers();
+builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
 {
-    app.UseDeveloperExceptionPage();
     app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseSwaggerUI(options =>
+    {
+        options.SwaggerEndpoint(JsonEndpointPath, JsonEndpointName);
+        options.RoutePrefix = string.Empty;
+    });
 }
-else if (app.Environment.IsProduction()) 
-    app.UseExceptionHandler("/error");
 
 app.UseHttpsRedirection();
 app.UseRouting();
