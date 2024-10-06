@@ -10,6 +10,6 @@ public class HomeController : ControllerBase
     [Route("[action]")]
     public IActionResult Index()
     {
-        return Ok(new { Success = true, Data = "Тест" });
+        return Content("Verbose API");
     }
 }
