@@ -1,21 +1,24 @@
+using DataAccessLayer.Entities;
+using DataAccessLayer.EntityConfigurations;
 using Microsoft.EntityFrameworkCore;
 
 namespace DataAccessLayer.Database;
 
 /// <summary>
-/// Клиент EF для MS SQL Server
+/// Клиент EF для MySQL
 /// </summary>
 public sealed class AppDbContext : DbContext
 {
-    private readonly string _connectionString;
-    public AppDbContext(string connectionString)
+    public DbSet<DictionaryEntity> Dictionaries => Set<DictionaryEntity>();
+    public DbSet<DictionaryElementEntity> DictionaryElements => Set<DictionaryElementEntity>();
+    public AppDbContext(DbContextOptions<AppDbContext> optionsBuilder) : base(optionsBuilder)
     {
-        _connectionString = connectionString;
         Database.EnsureCreated();
     }
-    
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        optionsBuilder.UseSqlServer(_connectionString);
+        modelBuilder.ApplyConfiguration(new DictionaryConfiguration());
+        modelBuilder.ApplyConfiguration(new DictionaryElementConfiguration());
     }
 }
