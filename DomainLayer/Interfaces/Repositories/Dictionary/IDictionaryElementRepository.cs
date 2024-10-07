@@ -1,6 +1,6 @@
-using DomainLayer.Models;
+using DomainLayer.Models.DictionaryModels;
 
-namespace DomainLayer.Interfaces.Repositories;
+namespace DomainLayer.Interfaces.Repositories.Dictionary;
 
 public interface IDictionaryElementRepository
 {

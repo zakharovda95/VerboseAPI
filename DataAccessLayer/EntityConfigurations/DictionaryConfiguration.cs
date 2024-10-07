@@ -1,4 +1,4 @@
-using DataAccessLayer.Entities;
+using DataAccessLayer.Entities.DictionaryEntities;
 using DataAccessLayer.Enums;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;

@@ -1,6 +1,4 @@
-using System.ComponentModel.DataAnnotations.Schema;
-
-namespace DataAccessLayer.Entities;
+namespace DataAccessLayer.Entities.DictionaryEntities;
 
 public class DictionaryElementEntity : BaseEntity
 {

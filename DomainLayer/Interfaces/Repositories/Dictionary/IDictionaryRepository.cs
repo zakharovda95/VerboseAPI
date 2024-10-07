@@ -1,6 +1,6 @@
-using DomainLayer.Models;
+using DomainLayer.Models.DictionaryModels;
 
-namespace DomainLayer.Interfaces.Repositories;
+namespace DomainLayer.Interfaces.Repositories.Dictionary;
 
 /// <summary>
 /// Репозиторий для взаимодействия с сущностью [DictionaryEntity]
@@ -8,8 +8,8 @@ namespace DomainLayer.Interfaces.Repositories;
 public interface IDictionaryRepository
 {
     public Task<bool> AddDictionary(DictionaryModelShort dictionaryData);
-    public List<DictionaryModelBase> GetDictionaryList();
-    public List<DictionaryModel> GetDictionaries(int[]? dictionaryIds);
+    public IEnumerable<DictionaryModelBase> GetDictionaryList();
+    public IEnumerable<DictionaryModel> GetDictionaries(int[]? dictionaryIds);
     public Task<bool> CleanAllDictionaries();
     public Task<bool> DeleteAllDictionaries();
     public Task<bool> CleanDictionaries(int[]? dictionaryIds);

@@ -1,4 +1,4 @@
-using DataAccessLayer.Entities;
+using DataAccessLayer.Entities.DictionaryEntities;
 using DataAccessLayer.EntityConfigurations;
 using Microsoft.EntityFrameworkCore;
 

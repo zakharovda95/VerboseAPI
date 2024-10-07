@@ -1,29 +1,23 @@
 using DataAccessLayer.Database;
-using DataAccessLayer.Entities;
+using DataAccessLayer.Entities.DictionaryEntities;
 using DataAccessLayer.Mappers;
-using DomainLayer.Interfaces.Repositories;
-using DomainLayer.Models;
+using DomainLayer.Interfaces.Repositories.Dictionary;
+using DomainLayer.Models.DictionaryModels;
 using Microsoft.EntityFrameworkCore;
 
-namespace DataAccessLayer.Repositories;
+namespace DataAccessLayer.Repositories.DictionaryRepositories;
 
 public class DictionaryRepository : IDictionaryRepository
 {
     private readonly AppDbContext _dbContext;
     private readonly DictionaryMapper _dictionaryMapper;
-    private readonly DictionaryElementMapper _dictionaryElementMapper;
 
-    public DictionaryRepository(
-        AppDbContext dbContext,
-        DictionaryMapper dictionaryMapper,
-        DictionaryElementMapper dictionaryElementMapper)
+    public DictionaryRepository(AppDbContext dbContext, DictionaryMapper dictionaryMapper)
     {
         _dbContext =
             dbContext ?? throw new NullReferenceException(nameof(AppDbContext));
         _dictionaryMapper =
             dictionaryMapper ?? throw new NullReferenceException(nameof(DictionaryMapper));
-        _dictionaryElementMapper =
-            dictionaryElementMapper ?? throw new NullReferenceException(nameof(DictionaryElementMapper));
     }
 
     public async Task<bool> AddDictionary(DictionaryModelShort dictionaryData)
@@ -36,7 +30,7 @@ public class DictionaryRepository : IDictionaryRepository
         return res > 0;
     }
 
-    public List<DictionaryModelBase> GetDictionaryList()
+    public IEnumerable<DictionaryModelBase> GetDictionaryList()
     {
         var models = new List<DictionaryModelBase>();
         var dictionaryEntities = _dbContext.Dictionaries
@@ -51,7 +45,7 @@ public class DictionaryRepository : IDictionaryRepository
         return models;
     }
 
-    public List<DictionaryModel> GetDictionaries(int[]? dictionaryIds)
+    public IEnumerable<DictionaryModel> GetDictionaries(int[]? dictionaryIds)
     {
         var models = new List<DictionaryModel>();
         List<DictionaryEntity> dictionaryEntities;

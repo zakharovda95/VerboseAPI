@@ -1,5 +1,5 @@
-using DataAccessLayer.Entities;
-using DomainLayer.Models;
+using DataAccessLayer.Entities.DictionaryEntities;
+using DomainLayer.Models.DictionaryModels;
 
 namespace DataAccessLayer.Mappers;
 

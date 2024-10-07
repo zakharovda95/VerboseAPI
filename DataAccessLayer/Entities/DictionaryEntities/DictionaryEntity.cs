@@ -1,4 +1,4 @@
-namespace DataAccessLayer.Entities;
+namespace DataAccessLayer.Entities.DictionaryEntities;
 
 public class DictionaryEntity : BaseEntity
 {

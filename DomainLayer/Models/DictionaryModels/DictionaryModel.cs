@@ -1,4 +1,4 @@
-namespace DomainLayer.Models;
+namespace DomainLayer.Models.DictionaryModels;
 
 /// <summary>
 /// Модель для создания нового словаря

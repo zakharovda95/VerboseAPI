@@ -1,4 +1,7 @@
 using DataAccessLayer.Database;
+using DataAccessLayer.Mappers;
+using DataAccessLayer.Repositories.DictionaryRepositories;
+using DomainLayer.Interfaces.Repositories.Dictionary;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -10,6 +13,17 @@ builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseMySql(
         builder.Configuration.GetConnectionString("DB_CS"), 
         new MySqlServerVersion( new Version(9, 0, 0))));
+
+/** Репозитории **/
+builder.Services.AddScoped<IDictionaryRepository, DictionaryRepository>();
+builder.Services.AddScoped<IDictionaryElementRepository, DictionaryElementRepository>();
+
+/** Мапперы **/
+builder.Services.AddScoped<DictionaryMapper>();
+builder.Services.AddScoped<DictionaryMapper>();
+
+/** Сервисы **/
+
 
 builder.Services.AddControllers();
 builder.Services.AddSwaggerGen();
