@@ -17,8 +17,38 @@ public class DictionaryElementRepository : IDictionaryElementRepository
         _dictionaryElementMapper =
             dictionaryElementMapper ?? throw new NullReferenceException(nameof(DictionaryElementMapper));
     }
+
+    #region CREATE
+
+    public Task<bool> AddElement(int dictionaryId, DictionaryElementModelShort elementData)
+    {
+        throw new NotImplementedException();
+    }
     
-    public Task<List<DictionaryElementModel>> GetElements(int[]? elementsIds)
+    public Task<bool> CopyAllElements(int dictionaryId, int toDictionaryId)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<bool> CopyElements(int[] elementIds, int toDictionaryId)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<bool> CopyElementById(int elementId, int toDictionaryId)
+    {
+        throw new NotImplementedException();
+    }
+    #endregion
+
+    #region READ
+
+    public Task<List<DictionaryElementModel>> GetAllElements()
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<List<DictionaryElementModel>> GetElements(int[] elementsIds)
     {
         throw new NotImplementedException();
     }
@@ -28,37 +58,11 @@ public class DictionaryElementRepository : IDictionaryElementRepository
         throw new NotImplementedException();
     }
 
-    public Task<bool> AddElement(int dictionaryId, DictionaryElementModelShort elementData)
-    {
-        throw new NotImplementedException();
-    }
+    #endregion
 
-    public Task<bool> EditElement(int dictionaryId, DictionaryElementModelShort newElementData)
-    {
-        throw new NotImplementedException();
-    }
+    #region UPDATE
 
-    public Task<bool> DeleteElements(int dictionaryId, int[] elementIds)
-    {
-        throw new NotImplementedException();
-    }
-
-    public Task<bool> DeleteElementById(int dictionaryId, int elementId)
-    {
-        throw new NotImplementedException();
-    }
-
-    public Task<bool> CopyAllElements(int dictionaryId, int toDictionaryId)
-    {
-        throw new NotImplementedException();
-    }
-
-    public Task<bool> CopyElements(int dictionaryId, int toDictionaryId, int[] elementIds)
-    {
-        throw new NotImplementedException();
-    }
-
-    public Task<bool> CopyElementById(int dictionaryId, int toDictionaryId, int elementId)
+    public Task<bool> EditElement(int elementId, DictionaryElementModelShort newElementData)
     {
         throw new NotImplementedException();
     }
@@ -68,13 +72,34 @@ public class DictionaryElementRepository : IDictionaryElementRepository
         throw new NotImplementedException();
     }
 
-    public Task<bool> MoveElements(int dictionaryId, int toDictionaryId, int[] elementIds)
+    public Task<bool> MoveElements(int[] elementIds, int toDictionaryId)
     {
         throw new NotImplementedException();
     }
 
-    public Task<bool> MoveElementById(int dictionaryId, int toDictionaryId, int elementId)
+    public Task<bool> MoveElementById(int elementId, int toDictionaryId)
     {
         throw new NotImplementedException();
     }
+
+    #endregion
+
+    #region DELETE
+
+    public Task<bool> DeleteAllElements(int dictionaryId)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<bool> DeleteElements(int[] elementIds)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<bool> DeleteElementById(int elementId)
+    {
+        throw new NotImplementedException();
+    }
+
+    #endregion
 }
