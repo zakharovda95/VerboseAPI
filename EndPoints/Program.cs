@@ -15,12 +15,12 @@ builder.Services.AddDbContext<AppDbContext>(options =>
         new MySqlServerVersion( new Version(9, 0, 0))));
 
 /** Репозитории **/
-builder.Services.AddScoped<IDictionaryRepository, DictionaryRepository>();
-builder.Services.AddScoped<IDictionaryElementRepository, DictionaryElementRepository>();
+builder.Services.AddTransient<IDictionaryRepository, DictionaryRepository>();
+builder.Services.AddTransient<IDictionaryElementRepository, DictionaryElementRepository>();
 
 /** Мапперы **/
-builder.Services.AddScoped<DictionaryMapper>();
-builder.Services.AddScoped<DictionaryMapper>();
+builder.Services.AddTransient<DictionaryMapper>();
+builder.Services.AddTransient<DictionaryElementMapper>();
 
 /** Сервисы **/
 
