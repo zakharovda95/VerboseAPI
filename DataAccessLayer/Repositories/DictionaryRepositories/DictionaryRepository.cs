@@ -20,6 +20,8 @@ public class DictionaryRepository : IDictionaryRepository
             dictionaryMapper ?? throw new NullReferenceException(nameof(DictionaryMapper));
     }
 
+    #region CREATE
+
     public async Task<bool> AddDictionary(DictionaryModelShort dictionaryData)
     {
         if (dictionaryData is null)
@@ -30,6 +32,10 @@ public class DictionaryRepository : IDictionaryRepository
         int res = await _dbContext.SaveChangesAsync();
         return res > 0;
     }
+
+    #endregion
+    
+    #region READ
 
     public async Task<IEnumerable<DictionaryModelBase>> GetDictionaryList()
     {
@@ -78,7 +84,38 @@ public class DictionaryRepository : IDictionaryRepository
         return dictionaryEntity is null ? null : _dictionaryMapper.ToDomainModelFull(dictionaryEntity);
     }
 
-    public async Task<bool> CleanAllDictionaries()
+    #endregion
+    
+    #region UPDATE
+
+    public async Task<bool> EditDictionaryById(int dictionaryId, DictionaryModelShort newDictionaryData)
+    {
+        if (dictionaryId <= 0) throw new ArgumentOutOfRangeException(nameof(dictionaryId));
+        if (newDictionaryData is null)
+            throw new NullReferenceException(nameof(DictionaryModelShort));
+
+        var newDictionaryDataEntity = _dictionaryMapper.ToEntity(newDictionaryData);
+        if (newDictionaryData is null)
+            throw new NullReferenceException(nameof(newDictionaryDataEntity));
+
+        var dictionaryEntity = await _dbContext.Dictionaries.FirstOrDefaultAsync(b => b.Id == dictionaryId);
+        if (dictionaryEntity is null) throw new NullReferenceException(nameof(dictionaryEntity));
+
+
+        dictionaryEntity.Elements = newDictionaryDataEntity.Elements;
+        dictionaryEntity.Description = newDictionaryDataEntity.Description;
+        dictionaryEntity.Title = newDictionaryDataEntity.Title;
+        dictionaryEntity.LastUpdate = DateTime.Now;
+
+        var res = await _dbContext.SaveChangesAsync();
+        return res > 0;
+    }
+
+    #endregion
+
+    #region DELETE
+
+     public async Task<bool> CleanAllDictionaries()
     {
         return await _dbContext.ClearTablesAsync(new List<TableNameEnum> { TableNameEnum.DictionaryElement });
     }
@@ -138,26 +175,5 @@ public class DictionaryRepository : IDictionaryRepository
         return res > 0;
     }
 
-    public async Task<bool> EditDictionaryById(int dictionaryId, DictionaryModelShort newDictionaryData)
-    {
-        if (dictionaryId <= 0) throw new ArgumentOutOfRangeException(nameof(dictionaryId));
-        if (newDictionaryData is null)
-            throw new NullReferenceException(nameof(DictionaryModelShort));
-
-        var newDictionaryDataEntity = _dictionaryMapper.ToEntity(newDictionaryData);
-        if (newDictionaryData is null)
-            throw new NullReferenceException(nameof(newDictionaryDataEntity));
-
-        var dictionaryEntity = await _dbContext.Dictionaries.FirstOrDefaultAsync(b => b.Id == dictionaryId);
-        if (dictionaryEntity is null) throw new NullReferenceException(nameof(dictionaryEntity));
-
-
-        dictionaryEntity.Elements = newDictionaryDataEntity.Elements;
-        dictionaryEntity.Description = newDictionaryDataEntity.Description;
-        dictionaryEntity.Title = newDictionaryDataEntity.Title;
-        dictionaryEntity.LastUpdate = DateTime.Now;
-
-        var res = await _dbContext.SaveChangesAsync();
-        return res > 0;
-    }
+    #endregion
 }
