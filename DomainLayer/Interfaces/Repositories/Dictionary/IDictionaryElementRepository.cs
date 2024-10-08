@@ -18,7 +18,7 @@ public interface IDictionaryElementRepository
 
     public Task<List<DictionaryElementModel>> GetAllElements();
     public Task<List<DictionaryElementModel>> GetElements(int[] elementsIds);
-    public Task<DictionaryElementModel> GetElementById(int elementId);
+    public Task<DictionaryElementModel?> GetElementById(int elementId);
 
     #endregion
 

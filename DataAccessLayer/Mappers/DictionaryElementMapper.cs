@@ -7,8 +7,8 @@ public class DictionaryElementMapper
 {
     public DictionaryElementEntity ToEntity(DictionaryElementModelShort domainModel)
     {
-        if (domainModel is null)
-            throw new NullReferenceException(nameof(DictionaryElementModelShort));
+        if (domainModel is null) 
+            ArgumentNullException.ThrowIfNull(domainModel, nameof(domainModel));
         
         return new DictionaryElementEntity
         {
@@ -20,7 +20,7 @@ public class DictionaryElementMapper
     public DictionaryElementModelShort ToDomainModelShort(DictionaryElementEntity entity)
     {
         if (entity is null)
-            throw new NullReferenceException(nameof(DictionaryElementEntity));
+            ArgumentNullException.ThrowIfNull(entity, nameof(entity));
         
         return new DictionaryElementModelShort
         {
@@ -30,10 +30,10 @@ public class DictionaryElementMapper
         };
     }
     
-    public DictionaryElementModel ToDomainModel(DictionaryElementModel entity)
+    public DictionaryElementModel ToDomainModel(DictionaryElementEntity entity)
     {
         if (entity is null)
-            throw new NullReferenceException(nameof(DictionaryElementEntity));
+            ArgumentNullException.ThrowIfNull(entity, nameof(entity));
         
         return new DictionaryElementModel
         {

@@ -60,4 +60,20 @@ public sealed class AppDbContext : DbContext
             return false;
         }
     }
+    
+    public async Task<bool> ExecuteTransactionAsync(Func<Task> operations)
+    {
+        var transaction = await Database.BeginTransactionAsync();
+        try
+        {
+            await operations.Invoke();
+            await transaction.CommitAsync();
+            return true;
+        }
+        catch (Exception e)
+        {
+            await transaction.RollbackAsync();
+            return false;
+        }
+    }
 }
