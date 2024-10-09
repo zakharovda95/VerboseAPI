@@ -14,10 +14,11 @@ public class DictionaryElementRepository : IDictionaryElementRepository
 
     public DictionaryElementRepository(AppDbContext dbContext, DictionaryElementMapper dictionaryElementMapper)
     {
-        _dbContext =
-            dbContext ?? throw new NullReferenceException(nameof(AppDbContext));
-        _dictionaryElementMapper =
-            dictionaryElementMapper ?? throw new NullReferenceException(nameof(DictionaryElementMapper));
+        ArgumentNullException.ThrowIfNull(dbContext, nameof(dbContext));
+        ArgumentNullException.ThrowIfNull(dictionaryElementMapper, nameof(dictionaryElementMapper));
+        
+        _dbContext = dbContext;
+        _dictionaryElementMapper = dictionaryElementMapper;
     }
 
     #region CREATE
