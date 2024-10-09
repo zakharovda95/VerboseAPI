@@ -35,7 +35,7 @@ public interface IDictionaryElementRepository
 
     #region DELETE
 
-    public Task<bool> DeleteAllElements(int dictionaryId);
+    public Task<bool> DeleteAllElements();
     public Task<bool> DeleteElements(int[] elementIds);
     public Task<bool> DeleteElementById(int elementId);
 
