@@ -16,9 +16,9 @@ public interface IDictionaryRepository
 
     #region READ
 
-    public Task<IEnumerable<DictionaryModelBase>> GetDictionaryList();
-    public Task<IEnumerable<DictionaryModel>> GetAllDictionaries();
-    public Task<IEnumerable<DictionaryModel> > GetDictionaries(int[] dictionaryIds);
+    public Task<List<DictionaryModelBase>> GetDictionaryList();
+    public Task<List<DictionaryModel>> GetAllDictionaries();
+    public Task<List<DictionaryModel> > GetDictionaries(int[] dictionaryIds);
     public Task<DictionaryModelFull?> GetDictionaryById(int dictionaryId);
 
     #endregion
