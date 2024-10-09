@@ -1,7 +1,7 @@
 using DataAccessLayer.Database;
 using DataAccessLayer.Enums;
+using DataAccessLayer.Interfaces.Repositories.Dictionary;
 using DataAccessLayer.Mappers;
-using DomainLayer.Interfaces.Repositories.Dictionary;
 using DomainLayer.Models.DictionaryModels;
 using Microsoft.EntityFrameworkCore;
 
@@ -19,38 +19,33 @@ public class DictionaryRepository : IDictionaryRepository
     {
         ArgumentNullException.ThrowIfNull(dbContext, nameof(dbContext));
         ArgumentNullException.ThrowIfNull(dictionaryMapper, nameof(dictionaryMapper));
-        
+
         _dbContext = dbContext;
         _dictionaryMapper = dictionaryMapper;
     }
 
-    #region CREATE
-
     /// <summary>
     /// Добавляет новый словарь
     /// </summary>
-    /// <param name="dictionaryData">Данные словаря</param>
+    /// <param name="data">Данные словаря</param>
+    /// <param name="toId">Внешний ключ (если есть)</param>
     /// <returns>Результат добавления</returns>
-    public async Task<bool> AddDictionary(DictionaryModelShort dictionaryData)
+    public async Task<bool> CreateAsync(DictionaryModelShort data, int? toId = null)
     {
-        ArgumentNullException.ThrowIfNull(dictionaryData, nameof(dictionaryData));
+        ArgumentNullException.ThrowIfNull(data, nameof(data));
 
-        var dictionary = _dictionaryMapper.ToEntity(dictionaryData);
+        var dictionary = _dictionaryMapper.ToEntity(data);
         await _dbContext.Dictionaries.AddAsync(dictionary);
-        
+
         var res = await _dbContext.SaveChangesAsync();
         return res > 0;
     }
-
-    #endregion
-    
-    #region READ
 
     /// <summary>
     /// Возвращает список словарей (без их элементов)
     /// </summary>
     /// <returns>Список словарей без элементов</returns>
-    public async Task<List<DictionaryModelBase>> GetDictionaryList()
+    public async Task<List<DictionaryModelBase>> GetListAsync()
     {
         var dictionaries = await _dbContext.Dictionaries.ToListAsync();
         return dictionaries.Select(a => _dictionaryMapper.ToDomainModelBase(a)).ToList();
@@ -60,7 +55,7 @@ public class DictionaryRepository : IDictionaryRepository
     /// Возвращает все словари, включая элементы словарей
     /// </summary>
     /// <returns>Список словарей</returns>
-    public async Task<List<DictionaryModel>> GetAllDictionaries()
+    public async Task<List<DictionaryModel>> GetAllAsync()
     {
         var dictionaries = await _dbContext.Dictionaries
             .Include(a => a.Elements)
@@ -71,16 +66,16 @@ public class DictionaryRepository : IDictionaryRepository
     /// <summary>
     /// Возвращает выбранные словари
     /// </summary>
-    /// <param name="dictionaryIds">Id словарей</param>
+    /// <param name="ids">Id словарей</param>
     /// <returns>Список словарей</returns>
-    public async Task<List<DictionaryModel>> GetDictionaries(int[] dictionaryIds)
+    public async Task<List<DictionaryModel>> GetAnyAsync(int[] ids)
     {
-        ArgumentNullException.ThrowIfNull(dictionaryIds, nameof(dictionaryIds));
-        ArgumentOutOfRangeException.ThrowIfZero(dictionaryIds.Length, nameof(dictionaryIds));
+        ArgumentNullException.ThrowIfNull(ids, nameof(ids));
+        ArgumentOutOfRangeException.ThrowIfZero(ids.Length, nameof(ids));
 
         var dictionaries = await _dbContext.Dictionaries
             .Include(a => a.Elements)
-            .Where(b => dictionaryIds.Contains(b.Id))
+            .Where(b => ids.Contains(b.Id))
             .ToListAsync();
         return dictionaries.Select(entity => _dictionaryMapper.ToDomainModel(entity)).ToList();
     }
@@ -88,37 +83,33 @@ public class DictionaryRepository : IDictionaryRepository
     /// <summary>
     /// Возвращает словарь по Id
     /// </summary>
-    /// <param name="dictionaryId">Id словаря</param>
+    /// <param name="id">Id словаря</param>
     /// <returns>Словарь</returns>
-    public async Task<DictionaryModelFull?> GetDictionaryById(int dictionaryId)
+    public async Task<DictionaryModel?> GetByIdAsync(int id)
     {
-        ArgumentOutOfRangeException.ThrowIfNegativeOrZero(dictionaryId, nameof(dictionaryId));
+        ArgumentOutOfRangeException.ThrowIfNegativeOrZero(id, nameof(id));
 
         var dictionary = await _dbContext.Dictionaries
             .Include(a => a.Elements)
-            .FirstOrDefaultAsync(b => b.Id == dictionaryId);
-        return dictionary is null || dictionary.Id <= 0 ? null : _dictionaryMapper.ToDomainModelFull(dictionary);
+            .FirstOrDefaultAsync(b => b.Id == id);
+        return dictionary is null || dictionary.Id <= 0 ? null : _dictionaryMapper.ToDomainModel(dictionary);
     }
-
-    #endregion
-    
-    #region UPDATE
 
     /// <summary>
     /// Обновляет данные словаря
     /// </summary>
-    /// <param name="dictionaryId">Id словаря, который нужно обновить</param>
-    /// <param name="newDictionaryData">Новые данные словаря</param>
+    /// <param name="id">Id словаря, который нужно обновить</param>
+    /// <param name="newData">Новые данные словаря</param>
     /// <returns>Результат редактирования</returns>
-    public async Task<bool> EditDictionaryById(int dictionaryId, DictionaryModelShort newDictionaryData)
+    public async Task<bool> UpdateAsync(int id, DictionaryModelShort newData)
     {
-        ArgumentOutOfRangeException.ThrowIfNegativeOrZero(dictionaryId, nameof(dictionaryId));
-        ArgumentNullException.ThrowIfNull(newDictionaryData, nameof(newDictionaryData));
+        ArgumentOutOfRangeException.ThrowIfNegativeOrZero(id, nameof(id));
+        ArgumentNullException.ThrowIfNull(newData, nameof(newData));
 
-        var dictionary = await _dbContext.Dictionaries.FirstOrDefaultAsync(b => b.Id == dictionaryId);
+        var dictionary = await _dbContext.Dictionaries.FirstOrDefaultAsync(b => b.Id == id);
         if (dictionary is null) return false;
 
-        var newDictionaryDataEntity = _dictionaryMapper.ToEntity(newDictionaryData);
+        var newDictionaryDataEntity = _dictionaryMapper.ToEntity(newData);
 
         dictionary.LastUpdate = DateTime.Now;
         dictionary.Title = newDictionaryDataEntity.Title;
@@ -129,15 +120,13 @@ public class DictionaryRepository : IDictionaryRepository
         return res > 0;
     }
 
-    #endregion
-
     #region DELETE
 
     /// <summary>
     /// Очищает все словари (только элементы, заголовок описания остаются)
     /// </summary>
     /// <returns>Результат очистки словаря</returns>
-     public async Task<bool> CleanAllDictionaries()
+    public async Task<bool> CleanAllAsync()
     {
         return await _dbContext.ClearTablesAsync(new List<TableNameEnum> { TableNameEnum.DictionaryElement });
     }
@@ -145,16 +134,16 @@ public class DictionaryRepository : IDictionaryRepository
     /// <summary>
     /// Очищает выбранные словари (только элементы)
     /// </summary>
-    /// <param name="dictionaryIds">Id словарей, которые нужно очистить</param>
+    /// <param name="ids">Id словарей, которые нужно очистить</param>
     /// <returns>Результат очистки</returns>
-    public async Task<bool> CleanDictionaries(int[] dictionaryIds)
+    public async Task<bool> CleanAnyAsync(int[] ids)
     {
-        ArgumentNullException.ThrowIfNull(dictionaryIds, nameof(dictionaryIds));
-        ArgumentOutOfRangeException.ThrowIfNegativeOrZero(dictionaryIds.Length, nameof(dictionaryIds));
+        ArgumentNullException.ThrowIfNull(ids, nameof(ids));
+        ArgumentOutOfRangeException.ThrowIfNegativeOrZero(ids.Length, nameof(ids));
 
         var dictionaries = await _dbContext.Dictionaries
             .Include(a => a.Elements)
-            .Where(a => dictionaryIds.Contains(a.Id))
+            .Where(a => ids.Contains(a.Id))
             .ToListAsync();
         if (dictionaries is null || dictionaries.Count <= 0) return false;
 
@@ -168,21 +157,21 @@ public class DictionaryRepository : IDictionaryRepository
     }
 
     /// <summary>
-    /// очистка выбранного словаря (только элементы)
+    /// Очистка выбранного словаря (только элементы)
     /// </summary>
-    /// <param name="dictionaryId">Id словаря, который нужно очистить</param>
+    /// <param name="id">Id словаря, который нужно очистить</param>
     /// <returns>Результат очистки</returns>
-    public async Task<bool> CleanDictionaryById(int dictionaryId)
+    public async Task<bool> CleanByIdAsync(int id)
     {
-        ArgumentOutOfRangeException.ThrowIfNegativeOrZero(dictionaryId, nameof(dictionaryId));
+        ArgumentOutOfRangeException.ThrowIfNegativeOrZero(id, nameof(id));
 
         var dictionary = await _dbContext.Dictionaries
             .Include(a => a.Elements)
-            .FirstOrDefaultAsync(a => a.Id == dictionaryId);
+            .FirstOrDefaultAsync(a => a.Id == id);
         if (dictionary is null || dictionary.Id <= 0) return false;
-        
+
         dictionary.Elements.Clear();
-        
+
         var res = await _dbContext.SaveChangesAsync();
         return res > 0;
     }
@@ -191,7 +180,7 @@ public class DictionaryRepository : IDictionaryRepository
     /// Удаляем все словари и их записи
     /// </summary>
     /// <returns>Результат удаления</returns>
-    public async Task<bool> DeleteAllDictionaries()
+    public async Task<bool> DeleteAllAsync()
     {
         var tables = new List<TableNameEnum> { TableNameEnum.DictionaryElement, TableNameEnum.Dictionary };
         return await _dbContext.ClearTablesAsync(tables);
@@ -200,18 +189,18 @@ public class DictionaryRepository : IDictionaryRepository
     /// <summary>
     /// Удаляет выбранные словари
     /// </summary>
-    /// <param name="dictionaryIds">Id словарей, которые нужно удалить</param>
+    /// <param name="ids">Id словарей, которые нужно удалить</param>
     /// <returns>Результат удаления</returns>
-    public async Task<bool> DeleteDictionaries(int[] dictionaryIds)
+    public async Task<bool> DeleteAnyAsync(int[] ids)
     {
-        ArgumentNullException.ThrowIfNull(dictionaryIds, nameof(dictionaryIds));
+        ArgumentNullException.ThrowIfNull(ids, nameof(ids));
 
         var dictionaries = await _dbContext.Dictionaries
-            .Where(b => dictionaryIds.Contains(b.Id)).ToListAsync();
+            .Where(b => ids.Contains(b.Id)).ToListAsync();
         if (dictionaries is null || dictionaries.Count <= 0) return false;
-        
+
         _dbContext.Dictionaries.RemoveRange(dictionaries);
-        
+
         var res = await _dbContext.SaveChangesAsync();
         return res > 0;
     }
@@ -219,17 +208,17 @@ public class DictionaryRepository : IDictionaryRepository
     /// <summary>
     /// Удаляет выбранный словарь по Id
     /// </summary>
-    /// <param name="dictionaryId">Id словаря, который нужно удалить</param>
+    /// <param name="id">Id словаря, который нужно удалить</param>
     /// <returns>Результат удаления</returns>
-    public async Task<bool> DeleteDictionaryById(int dictionaryId)
+    public async Task<bool> DeleteByIdAsync(int id)
     {
-        ArgumentOutOfRangeException.ThrowIfNegativeOrZero(dictionaryId, nameof(dictionaryId));
+        ArgumentOutOfRangeException.ThrowIfNegativeOrZero(id, nameof(id));
 
-        var dictionary = await _dbContext.Dictionaries.FirstOrDefaultAsync(b => b.Id == dictionaryId);
+        var dictionary = await _dbContext.Dictionaries.FirstOrDefaultAsync(b => b.Id == id);
         if (dictionary is null || dictionary.Id <= 0) return false;
-        
+
         _dbContext.Dictionaries.Remove(dictionary);
-        
+
         var res = await _dbContext.SaveChangesAsync();
         return res > 0;
     }

@@ -27,11 +27,3 @@ public class DictionaryModel : DictionaryModelBase
 {
     public List<DictionaryElementModelShort> Elements { get; init; } = new();
 }
-
-/// <summary>
-/// Модель для получения информации о словаря (включая полную информацию о его элементах)
-/// </summary>
-public class DictionaryModelFull : DictionaryModelBase
-{
-    public List<DictionaryElementModel> Elements { get; init; } = new();
-}

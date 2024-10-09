@@ -77,40 +77,6 @@ public class DictionaryMapper
             Elements = _getElementsShort(entity.Elements)
         };
     }
-    
-    public DictionaryModelFull ToDomainModelFull(DictionaryEntity entity)
-    {
-        if (entity is null)
-            throw new NullReferenceException(nameof(DictionaryEntity));
-
-        var elements = new List<DictionaryElementModel>();
-        if (entity.Elements.Count > 0)
-        {
-            foreach (var entityElement in entity.Elements)
-            {
-                elements.Add(new DictionaryElementModel
-                {
-                    Id = entityElement.Id,
-                    Credate = entityElement.Credate,
-                    LastUpdate = entityElement.LastUpdate,
-                    Type = entityElement.Type,
-                    Title = entityElement.Title,
-                    Value = entityElement.Value,
-                });
-            }
-        }
-        
-        return new DictionaryModelFull()
-        {
-            Id = entity.Id,
-            Credate = entity.Credate,
-            LastUpdate = entity.LastUpdate,
-            Type = entity.Type,
-            Title = entity.Title,
-            Description = entity.Description,
-            Elements = elements
-        };
-    }
 
     private List<DictionaryElementModelShort> _getElementsShort(List<DictionaryElementEntity> elementEntities)
     {
