@@ -7,6 +7,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DataAccessLayer.Repositories.DictionaryRepositories;
 
+/// <summary>
+/// Репозиторий элементов словарей
+/// </summary>
 public class DictionaryElementRepository : IDictionaryElementRepository
 {
     private readonly AppDbContext _dbContext;
