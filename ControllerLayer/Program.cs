@@ -1,7 +1,7 @@
 using DataAccessLayer.Database;
-using DataAccessLayer.Interfaces.Repositories.Dictionary;
 using DataAccessLayer.Mappers;
 using DataAccessLayer.Repositories.DictionaryRepositories;
+using DomainLayer.Interfaces.Repositories.Dictionary;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);

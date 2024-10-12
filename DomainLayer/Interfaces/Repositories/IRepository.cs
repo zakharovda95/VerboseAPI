@@ -1,4 +1,4 @@
-namespace DataAccessLayer.Interfaces.Repositories;
+namespace DomainLayer.Interfaces.Repositories;
 
 /// <summary>
 /// Базовый интерфейс репозитория

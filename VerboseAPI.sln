@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EndPoints", "EndPoints\EndPoints.csproj", "{AF152FBA-80A2-45EC-B1B6-96E5B79C17A9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ControllerLayer", "ControllerLayer\ControllerLayer.csproj", "{AF152FBA-80A2-45EC-B1B6-96E5B79C17A9}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DomainLayer", "DomainLayer\DomainLayer.csproj", "{F3F77D1E-36CA-407F-A2AD-8148B62E8341}"
 EndProject

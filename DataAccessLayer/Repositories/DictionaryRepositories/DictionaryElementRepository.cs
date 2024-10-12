@@ -1,7 +1,7 @@
 using DataAccessLayer.Database;
 using DataAccessLayer.Enums;
-using DataAccessLayer.Interfaces.Repositories.Dictionary;
 using DataAccessLayer.Mappers;
+using DomainLayer.Interfaces.Repositories.Dictionary;
 using DomainLayer.Models.DictionaryModels;
 using Microsoft.EntityFrameworkCore;
 

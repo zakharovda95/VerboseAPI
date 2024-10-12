@@ -1,6 +1,6 @@
 using DomainLayer.Models.DictionaryModels;
 
-namespace DataAccessLayer.Interfaces.Repositories.Dictionary;
+namespace DomainLayer.Interfaces.Repositories.Dictionary;
 
 /// <summary>
 /// Репозиторий для взаимодействия со словарями

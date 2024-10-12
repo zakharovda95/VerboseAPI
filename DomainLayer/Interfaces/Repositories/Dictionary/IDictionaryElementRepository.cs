@@ -1,6 +1,6 @@
 using DomainLayer.Models.DictionaryModels;
 
-namespace DataAccessLayer.Interfaces.Repositories.Dictionary;
+namespace DomainLayer.Interfaces.Repositories.Dictionary;
 
 public interface IDictionaryElementRepository : IRepository<DictionaryElementModel, DictionaryElementModelShort>
 {
