@@ -1,9 +1,10 @@
 using DataAccessLayer.Entities.DictionaryEntities;
+using DataAccessLayer.Interfaces.Mappers;
 using DomainLayer.Models.DictionaryModels;
 
 namespace DataAccessLayer.Mappers;
 
-public class DictionaryElementMapper
+public class DictionaryElementMapper : IDictionaryElementMapper
 {
     public DictionaryElementEntity ToEntity(DictionaryElementModelShort domainModel)
     {
@@ -17,18 +18,18 @@ public class DictionaryElementMapper
         };
     }
 
-    public DictionaryElementModelShort ToDomainModelShort(DictionaryElementEntity entity)
-    {
-        if (entity is null)
-            ArgumentNullException.ThrowIfNull(entity, nameof(entity));
-        
-        return new DictionaryElementModelShort
-        {
-            Id = entity.Id,
-            Title = entity.Title,
-            Value = entity.Value
-        };
-    }
+    // public DictionaryElementModelShort ToDomainModelShort(DictionaryElementEntity entity)
+    // {
+    //     if (entity is null)
+    //         ArgumentNullException.ThrowIfNull(entity, nameof(entity));
+    //     
+    //     return new DictionaryElementModelShort
+    //     {
+    //         Id = entity.Id,
+    //         Title = entity.Title,
+    //         Value = entity.Value
+    //     };
+    // }
     
     public DictionaryElementModel ToDomainModel(DictionaryElementEntity entity)
     {

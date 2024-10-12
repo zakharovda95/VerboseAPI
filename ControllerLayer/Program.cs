@@ -1,4 +1,5 @@
 using DataAccessLayer.Database;
+using DataAccessLayer.Interfaces.Mappers;
 using DataAccessLayer.Mappers;
 using DataAccessLayer.Repositories.DictionaryRepositories;
 using DomainLayer.Interfaces.Repositories.Dictionary;
@@ -19,8 +20,8 @@ builder.Services.AddTransient<IDictionaryRepository, DictionaryRepository>();
 builder.Services.AddTransient<IDictionaryElementRepository, DictionaryElementRepository>();
 
 /** Мапперы **/
-builder.Services.AddTransient<DictionaryMapper>();
-builder.Services.AddTransient<DictionaryElementMapper>();
+builder.Services.AddTransient<IDictionaryMapper, DictionaryMapper>();
+builder.Services.AddTransient<IDictionaryElementMapper, DictionaryElementMapper>();
 
 /** Сервисы **/
 
