@@ -7,7 +7,7 @@ namespace DomainLayer.Interfaces.Repositories.Dictionary;
 /// </summary>
 public interface IDictionaryRepository : IRepository<DictionaryModel, DictionaryModelShort>
 {
-    public Task<List<DictionaryModelBase>> GetListAsync();
+    public Task<IEnumerable<DictionaryModelBase>> GetListAsync();
     public Task<bool> CleanAllAsync();
     public Task<bool> CleanAnyAsync(int[] ids);
     public Task<bool> CleanByIdAsync(int id);

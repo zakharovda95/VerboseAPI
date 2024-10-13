@@ -3,6 +3,8 @@ using DataAccessLayer.Interfaces.Mappers;
 using DataAccessLayer.Mappers;
 using DataAccessLayer.Repositories.DictionaryRepositories;
 using DomainLayer.Interfaces.Repositories.Dictionary;
+using DomainLayer.Interfaces.Services;
+using DomainLayer.Services;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -24,7 +26,8 @@ builder.Services.AddTransient<IDictionaryMapper, DictionaryMapper>();
 builder.Services.AddTransient<IDictionaryElementMapper, DictionaryElementMapper>();
 
 /** Сервисы **/
-
+builder.Services.AddTransient<IDictionaryService, DictionaryService>();
+builder.Services.AddTransient<IDictionaryElementService, DictionaryElementService>();
 
 builder.Services.AddControllers();
 builder.Services.AddSwaggerGen();

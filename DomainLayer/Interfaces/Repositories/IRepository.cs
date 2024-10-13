@@ -8,8 +8,8 @@ namespace DomainLayer.Interfaces.Repositories;
 public interface IRepository<TModel, in TModelShort> where TModel: class where TModelShort: class
 {
     Task<bool> CreateAsync(TModelShort data, int? toId = null);
-    Task<List<TModel>> GetAllAsync();
-    Task<List<TModel>> GetAnyAsync(int[] ids);
+    Task<IEnumerable<TModel>> GetAllAsync();
+    Task<IEnumerable<TModel>> GetAnyAsync(int[] ids);
     Task<TModel?> GetByIdAsync(int id);
     Task<bool> UpdateAsync(int id, TModelShort newData);
     Task<bool> DeleteAllAsync();

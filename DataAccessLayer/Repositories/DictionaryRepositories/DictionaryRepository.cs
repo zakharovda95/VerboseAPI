@@ -45,7 +45,7 @@ public class DictionaryRepository : IDictionaryRepository
     /// Возвращает список словарей (без их элементов)
     /// </summary>
     /// <returns>Список словарей без элементов</returns>
-    public async Task<List<DictionaryModelBase>> GetListAsync()
+    public async Task<IEnumerable<DictionaryModelBase>> GetListAsync()
     {
         var dictionaries = await _dbContext.Dictionaries.ToListAsync();
         return dictionaries.Select(a => _dictionaryMapper.ToDomainModelBase(a)).ToList();
@@ -55,7 +55,7 @@ public class DictionaryRepository : IDictionaryRepository
     /// Возвращает все словари, включая элементы словарей
     /// </summary>
     /// <returns>Список словарей</returns>
-    public async Task<List<DictionaryModel>> GetAllAsync()
+    public async Task<IEnumerable<DictionaryModel>> GetAllAsync()
     {
         var dictionaries = await _dbContext.Dictionaries
             .Include(a => a.Elements)
@@ -68,7 +68,7 @@ public class DictionaryRepository : IDictionaryRepository
     /// </summary>
     /// <param name="ids">Id словарей</param>
     /// <returns>Список словарей</returns>
-    public async Task<List<DictionaryModel>> GetAnyAsync(int[] ids)
+    public async Task<IEnumerable<DictionaryModel>> GetAnyAsync(int[] ids)
     {
         ArgumentNullException.ThrowIfNull(ids, nameof(ids));
         ArgumentOutOfRangeException.ThrowIfZero(ids.Length, nameof(ids));

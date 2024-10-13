@@ -9,5 +9,5 @@ public interface IDictionaryElementRepository : IRepository<DictionaryElementMod
     public Task<bool> CopyByIdAsync(int id, int toDictionaryId);
     public Task<bool> MoveAllAsync(int fromDictionaryId, int toDictionaryId);
     public Task<bool> MoveAnyAsync(int[] ids, int toDictionaryId);
-    public Task<bool> MoveByIdAsync(int ids, int toDictionaryId);
+    public Task<bool> MoveByIdAsync(int id, int toDictionaryId);
 }

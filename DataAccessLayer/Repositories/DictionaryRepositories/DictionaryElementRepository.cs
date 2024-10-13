@@ -125,7 +125,7 @@ public class DictionaryElementRepository : IDictionaryElementRepository
     /// Возвращает все элементы словарей
     /// </summary>
     /// <returns>Элементы словарей</returns>
-    public async Task<List<DictionaryElementModel>> GetAllAsync()
+    public async Task<IEnumerable<DictionaryElementModel>> GetAllAsync()
     {
         var elements = await _dbContext.DictionaryElements.ToListAsync();
         return elements
@@ -138,7 +138,7 @@ public class DictionaryElementRepository : IDictionaryElementRepository
     /// </summary>
     /// <param name="ids">Id элементов</param>
     /// <returns>Элементы словарей</returns>
-    public async Task<List<DictionaryElementModel>> GetAnyAsync(int[] ids)
+    public async Task<IEnumerable<DictionaryElementModel>> GetAnyAsync(int[] ids)
     {
         ArgumentNullException.ThrowIfNull(ids);
         ArgumentOutOfRangeException.ThrowIfZero(ids.Length, nameof(ids));
