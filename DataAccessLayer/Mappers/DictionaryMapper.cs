@@ -8,11 +8,11 @@ public class DictionaryMapper : IDictionaryMapper
 {
     public DictionaryEntity ToEntity(DictionaryModelShort domainModel)
     {
-        if (domainModel is null)
-            throw new NullReferenceException(nameof(DictionaryModelShort));
-        
+        ArgumentNullException.ThrowIfNull(domainModel, nameof(domainModel));
+
         var elements = new List<DictionaryElementEntity>();
-        if (elements.Count > 0)
+
+        if (domainModel.Elements is not null && domainModel.Elements.Any())
         {
             foreach (var domainElement in domainModel.Elements)
             {
@@ -23,7 +23,7 @@ public class DictionaryMapper : IDictionaryMapper
                 });
             }
         }
-        
+
         return new DictionaryEntity
         {
             Title = domainModel.Title,
@@ -32,24 +32,9 @@ public class DictionaryMapper : IDictionaryMapper
         };
     }
 
-    // public DictionaryModelShort ToDomainModelShort(DictionaryEntity entity)
-    // {
-    //     if (entity is null)
-    //         throw new NullReferenceException(nameof(DictionaryEntity));
-    //
-    //     return new DictionaryModelShort
-    //     {
-    //         Id = entity.Id,
-    //         Title = entity.Title,
-    //         Description = entity.Description,
-    //         Elements = _getElementsShort(entity.Elements)
-    //     };
-    // }
-    
     public DictionaryModelBase ToDomainModelBase(DictionaryEntity entity)
     {
-        if (entity is null)
-            throw new NullReferenceException(nameof(DictionaryEntity));
+        ArgumentNullException.ThrowIfNull(entity, nameof(entity));
 
         return new DictionaryModelBase
         {
@@ -61,11 +46,10 @@ public class DictionaryMapper : IDictionaryMapper
             Description = entity.Description,
         };
     }
-    
+
     public DictionaryModel ToDomainModel(DictionaryEntity entity)
     {
-        if (entity is null)
-            throw new NullReferenceException(nameof(DictionaryEntity));
+        ArgumentNullException.ThrowIfNull(entity, nameof(entity));
 
         return new DictionaryModel
         {
