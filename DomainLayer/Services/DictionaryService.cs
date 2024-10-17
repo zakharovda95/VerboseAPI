@@ -15,61 +15,157 @@ public class DictionaryService : IDictionaryService
     
     public async Task<bool> CreateAsync(DictionaryModelShort data, int? toId = null)
     {
-        return await _dictionaryRepository.CreateAsync(data, toId);
+        try
+        {
+            return await _dictionaryRepository.CreateAsync(data, toId);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
     }
 
     public async Task<IEnumerable<DictionaryModel>> GetAllAsync()
     {
-        return await _dictionaryRepository.GetAllAsync();
+        try
+        {
+            return await _dictionaryRepository.GetAllAsync();
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
     }
 
     public async Task<IEnumerable<DictionaryModel>> GetAnyAsync(int[] ids)
     {
-        return await _dictionaryRepository.GetAnyAsync(ids);
+        try
+        {
+            return await _dictionaryRepository.GetAnyAsync(ids);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
     }
 
     public async Task<DictionaryModel?> GetByIdAsync(int id)
     {
-        return await _dictionaryRepository.GetByIdAsync(id);
+        try
+        {
+            return await _dictionaryRepository.GetByIdAsync(id);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
     }
 
     public async Task<bool> UpdateAsync(int id, DictionaryModelShort newData)
     {
-        return await _dictionaryRepository.UpdateAsync(id, newData);
+        try
+        {
+            return await _dictionaryRepository.UpdateAsync(id, newData);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
     }
 
     public async Task<bool> DeleteAllAsync()
     {
-        return await _dictionaryRepository.DeleteAllAsync();
+        try
+        {
+            return await _dictionaryRepository.DeleteAllAsync();
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
     }
 
     public async Task<bool> DeleteAnyAsync(int[] ids)
     {
-        return await _dictionaryRepository.DeleteAnyAsync(ids);
+        try
+        {
+            return await _dictionaryRepository.DeleteAnyAsync(ids);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
     }
 
     public async Task<bool> DeleteByIdAsync(int id)
     {
-        return await _dictionaryRepository.DeleteByIdAsync(id);
+        try
+        {
+            return await _dictionaryRepository.DeleteByIdAsync(id);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
     }
 
     public async Task<IEnumerable<DictionaryModelBase>> GetListAsync()
     {
-        return await _dictionaryRepository.GetListAsync();
+        try
+        {
+            return await _dictionaryRepository.GetListAsync();
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
     }
 
     public async Task<bool> CleanAllAsync()
     {
-        return await _dictionaryRepository.CleanAllAsync();
+        try
+        {
+            return await _dictionaryRepository.CleanAllAsync();
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
     }
 
     public async Task<bool> CleanAnyAsync(int[] ids)
     {
-        return await _dictionaryRepository.CleanAnyAsync(ids);
+        try
+        {
+            return await _dictionaryRepository.CleanAnyAsync(ids);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
     }
 
     public async Task<bool> CleanByIdAsync(int id)
     {
-        return await _dictionaryRepository.CleanByIdAsync(id);
+        try
+        {
+            return await _dictionaryRepository.CleanByIdAsync(id);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
     }
 }

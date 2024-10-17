@@ -16,71 +16,183 @@ public class DictionaryElementService : IDictionaryElementService
 
     public async Task<bool> CreateAsync(DictionaryElementModelShort data, int? toId = null)
     {
-        return await _dictionaryElementRepository.CreateAsync(data, toId);
+        try
+        {
+            return await _dictionaryElementRepository.CreateAsync(data, toId);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
     }
 
     public async Task<IEnumerable<DictionaryElementModel>> GetAllAsync()
     {
-        return await _dictionaryElementRepository.GetAllAsync();
+        try
+        {
+            return await _dictionaryElementRepository.GetAllAsync();
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
     }
 
     public async Task<IEnumerable<DictionaryElementModel>> GetAnyAsync(int[] ids)
     {
-        return await _dictionaryElementRepository.GetAnyAsync(ids);
+        try
+        {
+            return await _dictionaryElementRepository.GetAnyAsync(ids);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
     }
 
     public async Task<DictionaryElementModel?> GetByIdAsync(int id)
     {
-        return await _dictionaryElementRepository.GetByIdAsync(id);
+        try
+        {
+            return await _dictionaryElementRepository.GetByIdAsync(id);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
     }
 
     public async Task<bool> UpdateAsync(int id, DictionaryElementModelShort newData)
     {
-        return await _dictionaryElementRepository.UpdateAsync(id, newData);
+        try
+        {
+            return await _dictionaryElementRepository.UpdateAsync(id, newData);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
     }
 
     public async Task<bool> DeleteAllAsync()
     {
-        return await _dictionaryElementRepository.DeleteAllAsync();
+        try
+        {
+            return await _dictionaryElementRepository.DeleteAllAsync();
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
     }
 
     public async Task<bool> DeleteAnyAsync(int[] ids)
     {
-        return await _dictionaryElementRepository.DeleteAnyAsync(ids);
+        try
+        {
+            return await _dictionaryElementRepository.DeleteAnyAsync(ids);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
     }
 
     public async Task<bool> DeleteByIdAsync(int id)
     {
-        return await _dictionaryElementRepository.DeleteByIdAsync(id);
+        try
+        {
+            return await _dictionaryElementRepository.DeleteByIdAsync(id);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
     }
 
     public async Task<bool> CopyAllAsync(int fromDictionaryId, int toDictionaryId)
     {
-        return await _dictionaryElementRepository.CopyAllAsync(fromDictionaryId, toDictionaryId);
+        try
+        {
+            return await _dictionaryElementRepository.CopyAllAsync(fromDictionaryId, toDictionaryId);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
     }
 
     public async Task<bool> CopyAnyAsync(int[] ids, int toDictionaryId)
     {
-        return await _dictionaryElementRepository.CopyAnyAsync(ids, toDictionaryId);
+        try
+        {
+            return await _dictionaryElementRepository.CopyAnyAsync(ids, toDictionaryId);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
     }
 
     public async Task<bool> CopyByIdAsync(int id, int toDictionaryId)
     {
-        return await _dictionaryElementRepository.CopyByIdAsync(id, toDictionaryId);
+        try
+        {
+            return await _dictionaryElementRepository.CopyByIdAsync(id, toDictionaryId);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
     }
 
     public async Task<bool> MoveAllAsync(int fromDictionaryId, int toDictionaryId)
     {
-        return await _dictionaryElementRepository.MoveAllAsync(fromDictionaryId, toDictionaryId);
+        try
+        {
+            return await _dictionaryElementRepository.MoveAllAsync(fromDictionaryId, toDictionaryId);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
     }
 
     public async Task<bool> MoveAnyAsync(int[] ids, int toDictionaryId)
     {
-        return await _dictionaryElementRepository.MoveAnyAsync(ids, toDictionaryId);
+        try
+        {
+            return await _dictionaryElementRepository.MoveAnyAsync(ids, toDictionaryId);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
     }
 
     public async Task<bool> MoveByIdAsync(int id, int toDictionaryId)
     {
-        return await _dictionaryElementRepository.MoveByIdAsync(id, toDictionaryId);
+        try
+        {
+            return await _dictionaryElementRepository.MoveByIdAsync(id, toDictionaryId);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
     }
 }
