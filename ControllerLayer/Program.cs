@@ -17,6 +17,8 @@ builder.Services.AddDbContext<AppDbContext>(options =>
         builder.Configuration.GetConnectionString("DB_CS"), 
         new MySqlServerVersion( new Version(9, 0, 0))));
 
+builder.Services.AddAutoMapper(typeof(Program));
+
 /** Репозитории **/
 builder.Services.AddTransient<IDictionaryRepository, DictionaryRepository>();
 builder.Services.AddTransient<IDictionaryElementRepository, DictionaryElementRepository>();
