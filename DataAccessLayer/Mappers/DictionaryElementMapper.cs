@@ -6,7 +6,7 @@ namespace DataAccessLayer.Mappers;
 
 public class DictionaryElementMapper : IDictionaryElementMapper
 {
-    public DictionaryElementEntity ToEntity(DictionaryElementModelShort domainModel)
+    public DictionaryElementEntity ToEntity(DictionaryElementModelBase domainModel)
     {
         ArgumentNullException.ThrowIfNull(domainModel, nameof(domainModel));
         return new DictionaryElementEntity

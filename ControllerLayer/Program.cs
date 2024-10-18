@@ -2,9 +2,9 @@ using DataAccessLayer.Database;
 using DataAccessLayer.Interfaces.Mappers;
 using DataAccessLayer.Mappers;
 using DataAccessLayer.Repositories.DictionaryRepositories;
-using DomainLayer.Interfaces.Repositories.Dictionary;
+using DomainLayer.Interfaces.Repositories;
 using DomainLayer.Interfaces.Services;
-using DomainLayer.Services;
+using DomainLayer.Models.DictionaryModels;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -20,16 +20,16 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 builder.Services.AddAutoMapper(typeof(Program));
 
 /** Репозитории **/
-builder.Services.AddTransient<IDictionaryRepository, DictionaryRepository>();
-builder.Services.AddTransient<IDictionaryElementRepository, DictionaryElementRepository>();
+builder.Services.AddTransient<IRepository<DictionaryModel, DictionaryModelBase>, DictionaryRepository>();
+builder.Services.AddTransient<IRepository<DictionaryElementModel, DictionaryElementModelBase>, DictionaryElementRepository>();
 
 /** Мапперы **/
 builder.Services.AddTransient<IDictionaryMapper, DictionaryMapper>();
 builder.Services.AddTransient<IDictionaryElementMapper, DictionaryElementMapper>();
 
 /** Сервисы **/
-builder.Services.AddTransient<IDictionaryService, DictionaryService>();
-builder.Services.AddTransient<IDictionaryElementService, DictionaryElementService>();
+// builder.Services.AddTransient<IDictionaryService, DictionaryService>();
+// builder.Services.AddTransient<IDictionaryElementService, DictionaryElementService>();
 
 builder.Services.AddControllers();
 builder.Services.AddSwaggerGen();

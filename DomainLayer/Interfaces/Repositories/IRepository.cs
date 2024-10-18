@@ -1,10 +1,10 @@
 namespace DomainLayer.Interfaces.Repositories;
 
 /// <summary>
-/// Базовый интерфейс репозитория
+/// Базовый интерфейс репозитория.
 /// </summary>
-/// <typeparam name="TModel">Полная модель (для возвращаемых элементов)</typeparam>
-/// <typeparam name="TModelShort">Короткая модель (для создания/редактирования)</typeparam>
+/// <typeparam name="TModel">Основная модель (для чтения)</typeparam>
+/// <typeparam name="TModelShort">Базовая модель (для создания/редактирования)</typeparam>
 public interface IRepository<TModel, in TModelShort> where TModel: class where TModelShort: class
 {
     Task<bool> CreateAsync(TModelShort data, int? toId = null);

@@ -6,7 +6,7 @@ namespace DataAccessLayer.Mappers;
 
 public class DictionaryMapper : IDictionaryMapper
 {
-    public DictionaryEntity ToEntity(DictionaryModelShort domainModel)
+    public DictionaryEntity ToEntity(DictionaryModelBase domainModel)
     {
         ArgumentNullException.ThrowIfNull(domainModel, nameof(domainModel));
 
@@ -32,11 +32,11 @@ public class DictionaryMapper : IDictionaryMapper
         };
     }
 
-    public DictionaryModelBase ToDomainModelBase(DictionaryEntity entity)
+    public DictionaryModelInfo ToDomainModelBase(DictionaryEntity entity)
     {
         ArgumentNullException.ThrowIfNull(entity, nameof(entity));
 
-        return new DictionaryModelBase
+        return new DictionaryModelInfo
         {
             Id = entity.Id,
             Credate = entity.Credate,
@@ -63,14 +63,14 @@ public class DictionaryMapper : IDictionaryMapper
         };
     }
 
-    private List<DictionaryElementModelShort> _getElementsShort(List<DictionaryElementEntity> elementEntities)
+    private List<DictionaryElementModelBase> _getElementsShort(List<DictionaryElementEntity> elementEntities)
     {
-        var elements = new List<DictionaryElementModelShort>();
+        var elements = new List<DictionaryElementModelBase>();
         if (elementEntities.Count > 0)
         {
             foreach (var entityElement in elementEntities)
             {
-                elements.Add(new DictionaryElementModelShort()
+                elements.Add(new DictionaryElementModelBase()
                 {
                     Id = entityElement.Id,
                     Title = entityElement.Title,

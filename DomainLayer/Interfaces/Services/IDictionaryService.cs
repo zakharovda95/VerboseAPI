@@ -4,11 +4,11 @@ namespace DomainLayer.Interfaces.Services;
 
 public interface IDictionaryService
 {
-    Task<bool> CreateAsync(DictionaryModelShort data, int? toId = null);
+    Task<bool> CreateAsync(DictionaryModelBase data, int? toId = null);
     Task<IEnumerable<DictionaryModel>> GetAllAsync();
     Task<IEnumerable<DictionaryModel>> GetAnyAsync(int[] ids);
     Task<DictionaryModel?> GetByIdAsync(int id);
-    Task<bool> UpdateAsync(int id, DictionaryModelShort newData);
+    Task<bool> UpdateAsync(int id, DictionaryModelBase newData);
     Task<bool> DeleteAllAsync();
     Task<bool> DeleteAnyAsync(int[] ids);
     Task<bool> DeleteByIdAsync(int id);

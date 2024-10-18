@@ -5,6 +5,6 @@ namespace DataAccessLayer.Interfaces.Mappers;
 
 public interface IDictionaryElementMapper
 {
-    public DictionaryElementEntity ToEntity(DictionaryElementModelShort domainModel);
+    public DictionaryElementEntity ToEntity(DictionaryElementModelBase domainModel);
     public DictionaryElementModel ToDomainModel(DictionaryElementEntity entity);
 }

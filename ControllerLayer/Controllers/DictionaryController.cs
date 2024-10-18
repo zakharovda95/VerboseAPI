@@ -17,7 +17,7 @@ public class DictionaryController : ControllerBase
     
     [HttpPost]
     [Route("/[controller]/add")]
-    public async Task<ActionResult> AddDictionary(DictionaryModelShort body)
+    public async Task<ActionResult> AddDictionary(DictionaryModelBase body)
     {
         ArgumentNullException.ThrowIfNull(body);
         var (_, title, description, items ) = body;
