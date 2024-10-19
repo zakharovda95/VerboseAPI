@@ -13,35 +13,35 @@ public class DictionaryModel : BaseModel
     public string Description { get; init; } = string.Empty;
     public IEnumerable<DictionaryElementModelBase>? Elements { get; init; }
 
-    // /// <summary>
-    // /// Приводит к [DictionaryModelBase]
-    // /// </summary>
-    // public DictionaryModelBase ToDictionaryModelBase()
-    // {
-    //     return new DictionaryModelBase
-    //     {
-    //         Id = Id,
-    //         Title = Title,
-    //         Description = Description,
-    //         Elements = Elements,
-    //     };
-    // }
-    //
-    // /// <summary>
-    // /// Приводит к [DictionaryModelInfo]
-    // /// </summary>
-    // public DictionaryModelInfo ToDictionaryModelInfo()
-    // {
-    //     return new DictionaryModelInfo
-    //     {
-    //         Id = Id,
-    //         Credate = Credate,
-    //         LastUpdate = LastUpdate,
-    //         Type = Type,
-    //         Title = Title,
-    //         Description = Description,
-    //     };
-    // }
+    /// <summary>
+    /// Приводит к [DictionaryModelBase]
+    /// </summary>
+    public DictionaryModelBase ToDictionaryModelBase()
+    {
+        return new DictionaryModelBase
+        {
+            Id = Id,
+            Title = Title,
+            Description = Description,
+            Elements = Elements,
+        };
+    }
+    
+    /// <summary>
+    /// Приводит к [DictionaryModelInfo]
+    /// </summary>
+    public DictionaryModelInfo ToDictionaryModelInfo()
+    {
+        return new DictionaryModelInfo
+        {
+            Id = Id,
+            Credate = Credate,
+            LastUpdate = LastUpdate,
+            Type = Type,
+            Title = Title,
+            Description = Description,
+        };
+    }
     
     public void Deconstruct(
         out int? id, 
