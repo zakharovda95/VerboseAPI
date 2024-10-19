@@ -1,7 +1,6 @@
 using AutoMapper;
 using DataAccessLayer.Database;
 using DataAccessLayer.Entities.DictionaryEntities;
-using DataAccessLayer.Enums;
 using DomainLayer.Interfaces.Repositories;
 using DomainLayer.Models.DictionaryModels;
 using Microsoft.EntityFrameworkCore;
@@ -51,6 +50,24 @@ public class DictionaryElementRepository : IRepository<DictionaryElementModel, D
             .Select(a => _mapper.Map<DictionaryElementModel>(a))
             .ToList();
     }
+    
+    /// <summary>
+    /// Возвращает выбранные элементы словарей
+    /// </summary>
+    /// <param name="ids">масив ID элементов словаря</param>
+    public async Task<IEnumerable<DictionaryElementModel>> GetAnyAsync(int[] ids)
+    {
+        ArgumentNullException.ThrowIfNull(ids, nameof(ids));
+        ArgumentOutOfRangeException.ThrowIfNegativeOrZero(ids.Length, nameof(ids));
+        
+        var elements = await _dbContext.DictionaryElements
+            .Where(a => ids.Contains(a.Id))
+            .ToListAsync();
+        
+        return elements
+            .Select(a => _mapper.Map<DictionaryElementModel>(a))
+            .ToList();
+    }
 
     /// <summary>
     /// Возвращает выбранный элемент словаря
@@ -90,7 +107,25 @@ public class DictionaryElementRepository : IRepository<DictionaryElementModel, D
     /// </summary>
     public async Task DeleteAllAsync()
     {
-        await _dbContext.ClearTablesAsync(new List<TableNameEnum> { TableNameEnum.DictionaryElement });
+        var elements = await _dbContext.DictionaryElements.ToListAsync();
+        if (elements.Count <= 0) return; // добавить ошибку
+        _dbContext.DictionaryElements.RemoveRange(elements);
+    }
+    
+    /// <summary>
+    /// Удаляет выбранные элементы словарей
+    /// </summary>
+    /// <param name="ids">масив ID элементов словаря</param>
+    public async Task DeleteAnyAsync(int[] ids)
+    {
+        ArgumentNullException.ThrowIfNull(ids, nameof(ids));
+        ArgumentOutOfRangeException.ThrowIfNegativeOrZero(ids.Length, nameof(ids));
+        
+        var elementsForDeleting = await _dbContext.DictionaryElements
+            .Where(a => ids.Contains(a.Id))
+            .ToListAsync();
+        if (elementsForDeleting.Count <= 0) return; // добавить ошибку
+        _dbContext.DictionaryElements.RemoveRange(elementsForDeleting);
     }
 
     /// <summary>

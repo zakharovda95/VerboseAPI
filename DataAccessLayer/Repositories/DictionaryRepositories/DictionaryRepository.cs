@@ -1,7 +1,6 @@
 using AutoMapper;
 using DataAccessLayer.Database;
 using DataAccessLayer.Entities.DictionaryEntities;
-using DataAccessLayer.Enums;
 using DomainLayer.Interfaces.Repositories;
 using DomainLayer.Models.DictionaryModels;
 using Microsoft.EntityFrameworkCore;
@@ -49,6 +48,23 @@ public class DictionaryRepository : IRepository<DictionaryModel, DictionaryModel
             .ToListAsync();
         return dictionaries.Select(a => _mapper.Map<DictionaryModel>(a)).ToList();
     }
+    
+    /// <summary>
+    /// Возвращает выбранные словари, включая элементы словарей
+    /// </summary>
+    /// <param name="ids">массив ID словарей</param>
+    /// <returns>Список словарей</returns>
+    public async Task<IEnumerable<DictionaryModel>> GetAnyAsync(int[] ids)
+    {
+        ArgumentNullException.ThrowIfNull(ids, nameof(ids));
+        ArgumentOutOfRangeException.ThrowIfNegativeOrZero(ids.Length, nameof(ids));
+        
+        var dictionaries = await _dbContext.Dictionaries
+            .Include(a => a.Elements)
+            .Where(a => ids.Contains(a.Id))
+            .ToListAsync();
+        return dictionaries.Select(a => _mapper.Map<DictionaryModel>(a)).ToList();
+    }
 
     /// <summary>
     /// Возвращает словарь по Id
@@ -91,8 +107,27 @@ public class DictionaryRepository : IRepository<DictionaryModel, DictionaryModel
     /// </summary>
     public async Task DeleteAllAsync()
     {
-        var tables = new List<TableNameEnum> { TableNameEnum.DictionaryElement, TableNameEnum.Dictionary };
-        await _dbContext.ClearTablesAsync(tables);
+        var dictionaries = await _dbContext.Dictionaries
+            .Include(a => a.Elements)
+            .ToListAsync();
+        if (dictionaries.Count <= 0) return; // добавить ошибку
+        _dbContext.Dictionaries.RemoveRange(dictionaries);
+    }
+    
+    /// <summary>
+    /// Удаляем выбранные словари и их записи
+    /// </summary>
+    /// <param name="ids">массив ID словарей</param>
+    public async Task DeleteAnyAsync(int[] ids)
+    {
+        ArgumentNullException.ThrowIfNull(ids, nameof(ids));
+        ArgumentOutOfRangeException.ThrowIfNegativeOrZero(ids.Length, nameof(ids));
+        var dictionaries = await _dbContext.Dictionaries
+            .Include(a => a.Elements)
+            .Where(a => ids.Contains(a.Id))
+            .ToListAsync();
+        if (dictionaries.Count <= 0) return; // добавить ошибку
+        _dbContext.Dictionaries.RemoveRange(dictionaries);
     }
     
     /// <summary>

@@ -9,8 +9,10 @@ public interface IRepository<TModel, in TModelBase> where TModel: class where TM
 {
     Task CreateAsync(TModelBase data, int? toId = null);
     Task<IEnumerable<TModel>> GetAllAsync();
+    Task<IEnumerable<TModel>> GetAnyAsync(int[] ids);
     Task<TModel?> GetByIdAsync(int id);
     Task UpdateAsync(int id, TModelBase newData);
     Task DeleteAllAsync();
+    Task DeleteAnyAsync(int[] ids);
     Task DeleteByIdAsync(int id);
 }
