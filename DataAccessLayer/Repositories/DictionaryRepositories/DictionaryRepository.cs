@@ -64,22 +64,22 @@ public class DictionaryRepository : IRepository<DictionaryModel, DictionaryModel
         return dictionaries.Select(a => _mapper.Map<DictionaryModel>(a)).ToList();
     }
 
-    /// <summary>
-    /// Возвращает выбранные словари
-    /// </summary>
-    /// <param name="ids">Id словарей</param>
-    /// <returns>Список словарей</returns>
-    public async Task<IEnumerable<DictionaryModel>> GetAnyAsync(int[] ids)
-    {
-        ArgumentNullException.ThrowIfNull(ids, nameof(ids));
-        ArgumentOutOfRangeException.ThrowIfZero(ids.Length, nameof(ids));
-
-        var dictionaries = await _dbContext.Dictionaries
-            .Include(a => a.Elements)
-            .Where(b => ids.Contains(b.Id))
-            .ToListAsync();
-        return dictionaries.Select(entity => _mapper.Map<DictionaryModel>(entity)).ToList();
-    }
+    // /// <summary>
+    // /// Возвращает выбранные словари
+    // /// </summary>
+    // /// <param name="ids">Id словарей</param>
+    // /// <returns>Список словарей</returns>
+    // public async Task<IEnumerable<DictionaryModel>> GetAnyAsync(int[] ids)
+    // {
+    //     ArgumentNullException.ThrowIfNull(ids, nameof(ids));
+    //     ArgumentOutOfRangeException.ThrowIfZero(ids.Length, nameof(ids));
+    //
+    //     var dictionaries = await _dbContext.Dictionaries
+    //         .Include(a => a.Elements)
+    //         .Where(b => ids.Contains(b.Id))
+    //         .ToListAsync();
+    //     return dictionaries.Select(entity => _mapper.Map<DictionaryModel>(entity)).ToList();
+    // }
 
     /// <summary>
     /// Возвращает словарь по Id
@@ -187,24 +187,24 @@ public class DictionaryRepository : IRepository<DictionaryModel, DictionaryModel
         return await _dbContext.ClearTablesAsync(tables);
     }
 
-    /// <summary>
-    /// Удаляет выбранные словари
-    /// </summary>
-    /// <param name="ids">Id словарей, которые нужно удалить</param>
-    /// <returns>Результат удаления</returns>
-    public async Task<bool> DeleteAnyAsync(int[] ids)
-    {
-        ArgumentNullException.ThrowIfNull(ids, nameof(ids));
-
-        var dictionaries = await _dbContext.Dictionaries
-            .Where(b => ids.Contains(b.Id)).ToListAsync();
-        if (dictionaries is null || dictionaries.Count <= 0) return false;
-
-        _dbContext.Dictionaries.RemoveRange(dictionaries);
-
-        var res = await _dbContext.SaveChangesAsync();
-        return res > 0;
-    }
+    // /// <summary>
+    // /// Удаляет выбранные словари
+    // /// </summary>
+    // /// <param name="ids">Id словарей, которые нужно удалить</param>
+    // /// <returns>Результат удаления</returns>
+    // public async Task<bool> DeleteAnyAsync(int[] ids)
+    // {
+    //     ArgumentNullException.ThrowIfNull(ids, nameof(ids));
+    //
+    //     var dictionaries = await _dbContext.Dictionaries
+    //         .Where(b => ids.Contains(b.Id)).ToListAsync();
+    //     if (dictionaries is null || dictionaries.Count <= 0) return false;
+    //
+    //     _dbContext.Dictionaries.RemoveRange(dictionaries);
+    //
+    //     var res = await _dbContext.SaveChangesAsync();
+    //     return res > 0;
+    // }
 
     /// <summary>
     /// Удаляет выбранный словарь по Id

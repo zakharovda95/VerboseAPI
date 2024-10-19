@@ -135,24 +135,24 @@ public class DictionaryElementRepository : IRepository<DictionaryElementModel, D
             .ToList();
     }
 
-    /// <summary>
-    /// Возвращает выбранные элементы словарей
-    /// </summary>
-    /// <param name="ids">Id элементов</param>
-    /// <returns>Элементы словарей</returns>
-    public async Task<IEnumerable<DictionaryElementModel>> GetAnyAsync(int[] ids)
-    {
-        ArgumentNullException.ThrowIfNull(ids);
-        ArgumentOutOfRangeException.ThrowIfZero(ids.Length, nameof(ids));
-
-        var elements = await _dbContext.DictionaryElements
-            .Where(a => ids.Contains(a.Id))
-            .ToListAsync();
-
-        return elements
-            .Select(a => _mapper.Map<DictionaryElementModel>(a))
-            .ToList();
-    }
+    // /// <summary>
+    // /// Возвращает выбранные элементы словарей
+    // /// </summary>
+    // /// <param name="ids">Id элементов</param>
+    // /// <returns>Элементы словарей</returns>
+    // public async Task<IEnumerable<DictionaryElementModel>> GetAnyAsync(int[] ids)
+    // {
+    //     ArgumentNullException.ThrowIfNull(ids);
+    //     ArgumentOutOfRangeException.ThrowIfZero(ids.Length, nameof(ids));
+    //
+    //     var elements = await _dbContext.DictionaryElements
+    //         .Where(a => ids.Contains(a.Id))
+    //         .ToListAsync();
+    //
+    //     return elements
+    //         .Select(a => _mapper.Map<DictionaryElementModel>(a))
+    //         .ToList();
+    // }
 
     /// <summary>
     /// Возвращает выбранный элемент словаря
@@ -284,26 +284,26 @@ public class DictionaryElementRepository : IRepository<DictionaryElementModel, D
         return await _dbContext.ClearTablesAsync(new List<TableNameEnum> { TableNameEnum.DictionaryElement });
     }
 
-    /// <summary>
-    /// Удаляет выбранные элементы словарей
-    /// </summary>
-    /// <param name="ids">Id элементов словарей</param>
-    /// <returns>Результат удаления</returns>
-    public async Task<bool> DeleteAnyAsync(int[] ids)
-    {
-        ArgumentNullException.ThrowIfNull(ids, nameof(ids));
-        ArgumentOutOfRangeException.ThrowIfZero(ids.Length, nameof(ids));
-
-        var elements = await _dbContext.DictionaryElements
-            .Where(a => ids.Contains(a.Id))
-            .ToListAsync();
-        if (elements is null || elements.Count <= 0) return false;
-
-        _dbContext.DictionaryElements.RemoveRange(elements);
-
-        var res = await _dbContext.SaveChangesAsync();
-        return res > 0;
-    }
+    // /// <summary>
+    // /// Удаляет выбранные элементы словарей
+    // /// </summary>
+    // /// <param name="ids">Id элементов словарей</param>
+    // /// <returns>Результат удаления</returns>
+    // public async Task<bool> DeleteAnyAsync(int[] ids)
+    // {
+    //     ArgumentNullException.ThrowIfNull(ids, nameof(ids));
+    //     ArgumentOutOfRangeException.ThrowIfZero(ids.Length, nameof(ids));
+    //
+    //     var elements = await _dbContext.DictionaryElements
+    //         .Where(a => ids.Contains(a.Id))
+    //         .ToListAsync();
+    //     if (elements is null || elements.Count <= 0) return false;
+    //
+    //     _dbContext.DictionaryElements.RemoveRange(elements);
+    //
+    //     var res = await _dbContext.SaveChangesAsync();
+    //     return res > 0;
+    // }
 
     /// <summary>
     /// Удаляет выбранный элемент словаря
