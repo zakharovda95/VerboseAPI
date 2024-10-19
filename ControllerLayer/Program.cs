@@ -1,8 +1,10 @@
 using DataAccessLayer.AutoMapperProfiles.DictionaryAutoMapperProfiles;
 using DataAccessLayer.Database;
 using DataAccessLayer.Repositories.DictionaryRepositories;
+using DataAccessLayer.UnitOfWorks;
 using DomainLayer.Interfaces.Repositories;
 using DomainLayer.Interfaces.Services;
+using DomainLayer.Interfaces.UnitOfWorks;
 using DomainLayer.Models.DictionaryModels;
 using Microsoft.EntityFrameworkCore;
 
@@ -23,6 +25,9 @@ builder.Services.AddAutoMapper(
 /** Репозитории **/
 builder.Services.AddTransient<IRepository<DictionaryModel, DictionaryModelBase>, DictionaryRepository>();
 builder.Services.AddTransient<IRepository<DictionaryElementModel, DictionaryElementModelBase>, DictionaryElementRepository>();
+
+/** UnitOfWorks **/
+builder.Services.AddScoped<IDictionaryUnitOfWork, DictionaryUnitOfWork>();
 
 /** Сервисы **/
 // builder.Services.AddTransient<IDictionaryService, DictionaryService>();
