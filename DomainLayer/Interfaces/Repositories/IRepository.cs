@@ -4,14 +4,14 @@ namespace DomainLayer.Interfaces.Repositories;
 /// Базовый интерфейс репозитория.
 /// </summary>
 /// <typeparam name="TModel">Основная модель (для чтения)</typeparam>
-/// <typeparam name="TModelShort">Базовая модель (для создания/редактирования)</typeparam>
-public interface IRepository<TModel, in TModelShort> where TModel: class where TModelShort: class
+/// <typeparam name="TModelBase">Базовая модель (для создания/редактирования)</typeparam>
+public interface IRepository<TModel, in TModelBase> where TModel: class where TModelBase: class
 {
-    Task<bool> CreateAsync(TModelShort data, int? toId = null);
+    Task<bool> CreateAsync(TModelBase data, int? toId = null);
     Task<IEnumerable<TModel>> GetAllAsync();
     Task<IEnumerable<TModel>> GetAnyAsync(int[] ids);
     Task<TModel?> GetByIdAsync(int id);
-    Task<bool> UpdateAsync(int id, TModelShort newData);
+    Task<bool> UpdateAsync(int id, TModelBase newData);
     Task<bool> DeleteAllAsync();
     Task<bool> DeleteAnyAsync(int[] ids);
     Task<bool> DeleteByIdAsync(int id);
