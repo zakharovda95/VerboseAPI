@@ -1,6 +1,7 @@
+using AutoMapper;
 using DataAccessLayer.Database;
+using DataAccessLayer.Entities.DictionaryEntities;
 using DataAccessLayer.Enums;
-using DataAccessLayer.Mappers;
 using DomainLayer.Interfaces.Repositories;
 using DomainLayer.Models.DictionaryModels;
 using Microsoft.EntityFrameworkCore;
@@ -8,20 +9,20 @@ using Microsoft.EntityFrameworkCore;
 namespace DataAccessLayer.Repositories.DictionaryRepositories;
 
 /// <summary>
-/// Репозиторий Словарей
+/// Репозиторий cловарей
 /// </summary>
 public class DictionaryRepository : IRepository<DictionaryModel, DictionaryModelBase>
 {
     private readonly AppDbContext _dbContext;
-    private readonly DictionaryMapper _dictionaryMapper;
+    private readonly IMapper _mapper;
 
-    public DictionaryRepository(AppDbContext dbContext, DictionaryMapper dictionaryMapper)
+    public DictionaryRepository(AppDbContext dbContext, IMapper mapper)
     {
         ArgumentNullException.ThrowIfNull(dbContext, nameof(dbContext));
-        ArgumentNullException.ThrowIfNull(dictionaryMapper, nameof(dictionaryMapper));
+        ArgumentNullException.ThrowIfNull(mapper, nameof(mapper));
 
         _dbContext = dbContext;
-        _dictionaryMapper = dictionaryMapper;
+        _mapper = mapper;
     }
 
     /// <summary>
@@ -34,7 +35,7 @@ public class DictionaryRepository : IRepository<DictionaryModel, DictionaryModel
     {
         ArgumentNullException.ThrowIfNull(data, nameof(data));
 
-        var dictionary = _dictionaryMapper.ToEntity(data);
+        var dictionary = _mapper.Map<DictionaryEntity>(data);
         await _dbContext.Dictionaries.AddAsync(dictionary);
 
         var res = await _dbContext.SaveChangesAsync();
@@ -60,7 +61,7 @@ public class DictionaryRepository : IRepository<DictionaryModel, DictionaryModel
         var dictionaries = await _dbContext.Dictionaries
             .Include(a => a.Elements)
             .ToListAsync();
-        return dictionaries.Select(a => _dictionaryMapper.ToDomainModel(a)).ToList();
+        return dictionaries.Select(a => _mapper.Map<DictionaryModel>(a)).ToList();
     }
 
     /// <summary>
@@ -77,7 +78,7 @@ public class DictionaryRepository : IRepository<DictionaryModel, DictionaryModel
             .Include(a => a.Elements)
             .Where(b => ids.Contains(b.Id))
             .ToListAsync();
-        return dictionaries.Select(entity => _dictionaryMapper.ToDomainModel(entity)).ToList();
+        return dictionaries.Select(entity => _mapper.Map<DictionaryModel>(entity)).ToList();
     }
 
     /// <summary>
@@ -92,7 +93,7 @@ public class DictionaryRepository : IRepository<DictionaryModel, DictionaryModel
         var dictionary = await _dbContext.Dictionaries
             .Include(a => a.Elements)
             .FirstOrDefaultAsync(b => b.Id == id);
-        return dictionary is null || dictionary.Id <= 0 ? null : _dictionaryMapper.ToDomainModel(dictionary);
+        return dictionary is null || dictionary.Id <= 0 ? null : _mapper.Map<DictionaryModel>(dictionary);
     }
 
     /// <summary>
@@ -109,7 +110,7 @@ public class DictionaryRepository : IRepository<DictionaryModel, DictionaryModel
         var dictionary = await _dbContext.Dictionaries.FirstOrDefaultAsync(b => b.Id == id);
         if (dictionary is null) return false;
 
-        var newDictionaryDataEntity = _dictionaryMapper.ToEntity(newData);
+        var newDictionaryDataEntity = _mapper.Map<DictionaryEntity>(newData);
 
         dictionary.LastUpdate = DateTime.Now;
         dictionary.Title = newDictionaryDataEntity.Title;

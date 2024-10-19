@@ -1,6 +1,5 @@
+using DataAccessLayer.AutoMapperProfiles.DictionaryAutoMapperProfiles;
 using DataAccessLayer.Database;
-using DataAccessLayer.Interfaces.Mappers;
-using DataAccessLayer.Mappers;
 using DataAccessLayer.Repositories.DictionaryRepositories;
 using DomainLayer.Interfaces.Repositories;
 using DomainLayer.Interfaces.Services;
@@ -17,15 +16,13 @@ builder.Services.AddDbContext<AppDbContext>(options =>
         builder.Configuration.GetConnectionString("DB_CS"), 
         new MySqlServerVersion( new Version(9, 0, 0))));
 
-builder.Services.AddAutoMapper(typeof(Program));
+builder.Services.AddAutoMapper(
+    typeof(DictionaryAutoMapperProfile), 
+    typeof(DictionaryElementAutoMapperProfile));
 
 /** Репозитории **/
 builder.Services.AddTransient<IRepository<DictionaryModel, DictionaryModelBase>, DictionaryRepository>();
 builder.Services.AddTransient<IRepository<DictionaryElementModel, DictionaryElementModelBase>, DictionaryElementRepository>();
-
-/** Мапперы **/
-builder.Services.AddTransient<IDictionaryMapper, DictionaryMapper>();
-builder.Services.AddTransient<IDictionaryElementMapper, DictionaryElementMapper>();
 
 /** Сервисы **/
 // builder.Services.AddTransient<IDictionaryService, DictionaryService>();

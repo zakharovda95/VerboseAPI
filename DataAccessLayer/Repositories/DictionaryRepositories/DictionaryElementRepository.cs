@@ -1,6 +1,7 @@
+using AutoMapper;
 using DataAccessLayer.Database;
+using DataAccessLayer.Entities.DictionaryEntities;
 using DataAccessLayer.Enums;
-using DataAccessLayer.Mappers;
 using DomainLayer.Interfaces.Repositories;
 using DomainLayer.Models.DictionaryModels;
 using Microsoft.EntityFrameworkCore;
@@ -13,16 +14,17 @@ namespace DataAccessLayer.Repositories.DictionaryRepositories;
 public class DictionaryElementRepository : IRepository<DictionaryElementModel, DictionaryElementModelBase>
 {
     private readonly AppDbContext _dbContext;
-    private readonly DictionaryElementMapper _dictionaryElementMapper;
+    private readonly IMapper _mapper;
 
-    public DictionaryElementRepository(AppDbContext dbContext, DictionaryElementMapper dictionaryElementMapper)
+    public DictionaryElementRepository(AppDbContext dbContext, IMapper mapper)
     {
         ArgumentNullException.ThrowIfNull(dbContext, nameof(dbContext));
-        ArgumentNullException.ThrowIfNull(dictionaryElementMapper, nameof(dictionaryElementMapper));
+        ArgumentNullException.ThrowIfNull(mapper, nameof(mapper));
 
         _dbContext = dbContext;
-        _dictionaryElementMapper = dictionaryElementMapper;
+        _mapper = mapper;
     }
+
     /// <summary>
     /// Добавляет элемент в словарь
     /// </summary>
@@ -35,7 +37,7 @@ public class DictionaryElementRepository : IRepository<DictionaryElementModel, D
         ArgumentNullException.ThrowIfNull(toId, nameof(toId));
         ArgumentOutOfRangeException.ThrowIfNegativeOrZero((int)toId, nameof(toId));
 
-        var mappedData = _dictionaryElementMapper.ToEntity(data);
+        var mappedData = _mapper.Map<DictionaryElementEntity>(data);
 
         await _dbContext.DictionaryElements.AddAsync(mappedData);
         var res = await _dbContext.SaveChangesAsync();
@@ -129,7 +131,7 @@ public class DictionaryElementRepository : IRepository<DictionaryElementModel, D
     {
         var elements = await _dbContext.DictionaryElements.ToListAsync();
         return elements
-            .Select(a => _dictionaryElementMapper.ToDomainModel(a))
+            .Select(a => _mapper.Map<DictionaryElementModel>(a))
             .ToList();
     }
 
@@ -147,7 +149,9 @@ public class DictionaryElementRepository : IRepository<DictionaryElementModel, D
             .Where(a => ids.Contains(a.Id))
             .ToListAsync();
 
-        return elements.Select(a => _dictionaryElementMapper.ToDomainModel(a)).ToList();
+        return elements
+            .Select(a => _mapper.Map<DictionaryElementModel>(a))
+            .ToList();
     }
 
     /// <summary>
@@ -162,7 +166,7 @@ public class DictionaryElementRepository : IRepository<DictionaryElementModel, D
         var element = await _dbContext.DictionaryElements.FirstOrDefaultAsync(a => a.Id == id);
         if (element is null || element.Id <= 0) return null;
 
-        return _dictionaryElementMapper.ToDomainModel(element);
+        return _mapper.Map<DictionaryElementModel>(element);
     }
 
     #endregion

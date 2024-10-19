@@ -12,18 +12,18 @@ public class DictionaryElementModel : BaseModel
     public string Title { get; init; } = string.Empty;
     public int Value { get; init; }
 
-    /// <summary>
-    /// Приводит к [DictionaryElementModelBase]
-    /// </summary>
-    public DictionaryElementModelBase ToDictionaryElementModelBase()
-    {
-        return new DictionaryElementModelBase
-        {
-            Id = Id,
-            Title = Title,
-            Value = Value
-        };
-    }
+    // /// <summary>
+    // /// Приводит к [DictionaryElementModelBase]
+    // /// </summary>
+    // public DictionaryElementModelBase ToDictionaryElementModelBase()
+    // {
+    //     return new DictionaryElementModelBase
+    //     {
+    //         Id = Id,
+    //         Title = Title,
+    //         Value = Value
+    //     };
+    // }
     
     public void Deconstruct(
         out int? id, 
