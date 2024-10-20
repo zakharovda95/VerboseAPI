@@ -1,5 +1,8 @@
 namespace DataAccessLayer.Entities.DictionaryEntities;
 
+/// <summary>
+/// EF сущность словаря.
+/// </summary>
 public class DictionaryEntity : BaseEntity
 {
     public string Title { get; set; } = string.Empty;

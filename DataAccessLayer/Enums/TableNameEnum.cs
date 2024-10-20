@@ -3,18 +3,19 @@ using System.Reflection;
 namespace DataAccessLayer.Enums;
 
 /// <summary>
-/// Перечисление названий таблиц БД
+/// Перечисление названий таблиц БД.
 /// </summary>
 public enum TableNameEnum
 {
     [TableName("DICTIONARY")]
     Dictionary,
+    
     [TableName("DICTIONARYELEMENT")]
     DictionaryElement,
 }
 
 /// <summary>
-/// Добавляет строковое название таблицы к перечислению [TableNameEnum]
+/// Добавляет строковое название таблицы к перечислению [TableNameEnum].
 /// </summary>
 /// <param name="tableName">Название таблицы</param>
 [AttributeUsage(AttributeTargets.Field)]
@@ -24,7 +25,7 @@ public class TableNameAttribute(string tableName) : Attribute
 }
 
 /// <summary>
-/// Расширение для получения строкового представления поля перечисления [TableNameEnum] 
+/// Расширение для получения строкового представления поля перечисления [TableNameEnum].
 /// </summary>
 public static class TableNameExtension
 {

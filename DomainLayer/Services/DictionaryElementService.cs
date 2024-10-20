@@ -1,197 +1,161 @@
 using DomainLayer.Interfaces.Services;
+using DomainLayer.Interfaces.UnitOfWorks;
 using DomainLayer.Models.DictionaryModels;
 
 namespace DomainLayer.Services;
 
-// public class DictionaryElementService : IDictionaryElementService
-// {
-//     private IDictionaryElementRepository _dictionaryElementRepository;
-//
-//     public DictionaryElementService(IDictionaryElementRepository dictionaryElementRepository)
-//     {
-//         ArgumentNullException.ThrowIfNull(dictionaryElementRepository);
-//         _dictionaryElementRepository = dictionaryElementRepository;
-//     }
-//
-//     public async Task<bool> CreateAsync(DictionaryElementModelShort data, int? toId = null)
-//     {
-//         try
-//         {
-//             return await _dictionaryElementRepository.CreateAsync(data, toId);
-//         }
-//         catch (Exception e)
-//         {
-//             Console.WriteLine(e);
-//             throw;
-//         }
-//     }
-//
-//     public async Task<IEnumerable<DictionaryElementModel>> GetAllAsync()
-//     {
-//         try
-//         {
-//             return await _dictionaryElementRepository.GetAllAsync();
-//         }
-//         catch (Exception e)
-//         {
-//             Console.WriteLine(e);
-//             throw;
-//         }
-//     }
-//
-//     public async Task<IEnumerable<DictionaryElementModel>> GetAnyAsync(int[] ids)
-//     {
-//         try
-//         {
-//             return await _dictionaryElementRepository.GetAnyAsync(ids);
-//         }
-//         catch (Exception e)
-//         {
-//             Console.WriteLine(e);
-//             throw;
-//         }
-//     }
-//
-//     public async Task<DictionaryElementModel?> GetByIdAsync(int id)
-//     {
-//         try
-//         {
-//             return await _dictionaryElementRepository.GetByIdAsync(id);
-//         }
-//         catch (Exception e)
-//         {
-//             Console.WriteLine(e);
-//             throw;
-//         }
-//     }
-//
-//     public async Task<bool> UpdateAsync(int id, DictionaryElementModelShort newData)
-//     {
-//         try
-//         {
-//             return await _dictionaryElementRepository.UpdateAsync(id, newData);
-//         }
-//         catch (Exception e)
-//         {
-//             Console.WriteLine(e);
-//             throw;
-//         }
-//     }
-//
-//     public async Task<bool> DeleteAllAsync()
-//     {
-//         try
-//         {
-//             return await _dictionaryElementRepository.DeleteAllAsync();
-//         }
-//         catch (Exception e)
-//         {
-//             Console.WriteLine(e);
-//             throw;
-//         }
-//     }
-//
-//     public async Task<bool> DeleteAnyAsync(int[] ids)
-//     {
-//         try
-//         {
-//             return await _dictionaryElementRepository.DeleteAnyAsync(ids);
-//         }
-//         catch (Exception e)
-//         {
-//             Console.WriteLine(e);
-//             throw;
-//         }
-//     }
-//
-//     public async Task<bool> DeleteByIdAsync(int id)
-//     {
-//         try
-//         {
-//             return await _dictionaryElementRepository.DeleteByIdAsync(id);
-//         }
-//         catch (Exception e)
-//         {
-//             Console.WriteLine(e);
-//             throw;
-//         }
-//     }
-//
-//     public async Task<bool> CopyAllAsync(int fromDictionaryId, int toDictionaryId)
-//     {
-//         try
-//         {
-//             return await _dictionaryElementRepository.CopyAllAsync(fromDictionaryId, toDictionaryId);
-//         }
-//         catch (Exception e)
-//         {
-//             Console.WriteLine(e);
-//             throw;
-//         }
-//     }
-//
-//     public async Task<bool> CopyAnyAsync(int[] ids, int toDictionaryId)
-//     {
-//         try
-//         {
-//             return await _dictionaryElementRepository.CopyAnyAsync(ids, toDictionaryId);
-//         }
-//         catch (Exception e)
-//         {
-//             Console.WriteLine(e);
-//             throw;
-//         }
-//     }
-//
-//     public async Task<bool> CopyByIdAsync(int id, int toDictionaryId)
-//     {
-//         try
-//         {
-//             return await _dictionaryElementRepository.CopyByIdAsync(id, toDictionaryId);
-//         }
-//         catch (Exception e)
-//         {
-//             Console.WriteLine(e);
-//             throw;
-//         }
-//     }
-//
-//     public async Task<bool> MoveAllAsync(int fromDictionaryId, int toDictionaryId)
-//     {
-//         try
-//         {
-//             return await _dictionaryElementRepository.MoveAllAsync(fromDictionaryId, toDictionaryId);
-//         }
-//         catch (Exception e)
-//         {
-//             Console.WriteLine(e);
-//             throw;
-//         }
-//     }
-//
-//     public async Task<bool> MoveAnyAsync(int[] ids, int toDictionaryId)
-//     {
-//         try
-//         {
-//             return await _dictionaryElementRepository.MoveAnyAsync(ids, toDictionaryId);
-//         }
-//         catch (Exception e)
-//         {
-//             Console.WriteLine(e);
-//             throw;
-//         }
-//     }
-//
-//     public async Task<bool> MoveByIdAsync(int id, int toDictionaryId)
-//     {
-//         try
-//         {
-//             return await _dictionaryElementRepository.MoveByIdAsync(id, toDictionaryId);
-//         }
-//         catch (Exception e)
-//         {
-//             Console.WriteLine(e);
-//             throw;
-//         }
-//     }
-// }
+/// <summary>
+/// Сервис работы с элементами словарей.
+/// </summary>
+public class DictionaryElementService : IDictionaryElementService
+{
+    private readonly IDictionaryUnitOfWork _dictionaryUnitOfWork;
+
+    public DictionaryElementService(IDictionaryUnitOfWork dictionaryUnitOfWork)
+    {
+        ArgumentNullException.ThrowIfNull(dictionaryUnitOfWork, nameof(dictionaryUnitOfWork));
+        _dictionaryUnitOfWork = dictionaryUnitOfWork;
+    }
+
+    public async Task<bool> AddDictionaryElementAsync(DictionaryElementModelBase data, int? toId = null)
+    {
+        ArgumentNullException.ThrowIfNull(data, nameof(data));
+        ArgumentNullException.ThrowIfNull(toId, nameof(toId));
+        ArgumentOutOfRangeException.ThrowIfNegativeOrZero((int)toId, nameof(toId));
+
+        await _dictionaryUnitOfWork.DictionaryElementRepository.AddAsync(data, toId);
+        var res = await _dictionaryUnitOfWork.CommitAsync();
+        return res > 0;
+    }
+
+    public async Task<IEnumerable<DictionaryElementModel>> GetAllDictionaryElementsAsync()
+    {
+        return await _dictionaryUnitOfWork.DictionaryElementRepository.GetAllAsync();
+    }
+
+    public async Task<DictionaryElementModel?> GetDictionaryElementByIdAsync(int id)
+    {
+        ArgumentOutOfRangeException.ThrowIfNegativeOrZero(id, nameof(id));
+        return await _dictionaryUnitOfWork.DictionaryElementRepository.GetByIdAsync(id);
+    }
+
+    public async Task<bool> UpdateDictionaryElementAsync(int id, DictionaryElementModelBase newData)
+    {
+        ArgumentNullException.ThrowIfNull(newData, nameof(newData));
+        ArgumentOutOfRangeException.ThrowIfNegativeOrZero(id, nameof(id));
+
+        await _dictionaryUnitOfWork.DictionaryElementRepository.UpdateAsync(id, newData);
+        var res = await _dictionaryUnitOfWork.CommitAsync();
+        return res > 0;
+    }
+
+    public async Task<bool> DeleteAllDictionaryElementsAsync()
+    {
+        await _dictionaryUnitOfWork.DictionaryElementRepository.DeleteAllAsync();
+        var res = await _dictionaryUnitOfWork.CommitAsync();
+        return res > 0;
+    }
+
+    public async Task<bool> DeleteAnyDictionaryElementsAsync(IEnumerable<int> ids)
+    {
+        ArgumentNullException.ThrowIfNull(ids, nameof(ids));
+
+        await _dictionaryUnitOfWork.DictionaryElementRepository.DeleteAnyAsync(ids);
+        var res = await _dictionaryUnitOfWork.CommitAsync();
+        return res > 0;
+    }
+
+    public async Task<bool> DeleteDictionaryElementByIdAsync(int id)
+    {
+        ArgumentOutOfRangeException.ThrowIfNegativeOrZero(id, nameof(id));
+
+        await _dictionaryUnitOfWork.DictionaryElementRepository.DeleteByIdAsync(id);
+        var res = await _dictionaryUnitOfWork.CommitAsync();
+        return res > 0;
+    }
+
+    public async Task<bool> CopyAllDictionaryElementsFromDictionaryAsync(int fromDictionaryId, int toDictionaryId)
+    {
+        ArgumentOutOfRangeException.ThrowIfNegativeOrZero(fromDictionaryId, nameof(fromDictionaryId));
+        ArgumentOutOfRangeException.ThrowIfNegativeOrZero(toDictionaryId, nameof(toDictionaryId));
+
+        var fromDictionary = await _dictionaryUnitOfWork.DictionaryRepository.GetByIdAsync(fromDictionaryId);
+        var elementsForCopy = fromDictionary?.Elements;
+        if (elementsForCopy is null) return false; // добавить ошибку
+        
+        await _dictionaryUnitOfWork.DictionaryElementRepository.AddRangeAsync(elementsForCopy, toDictionaryId);
+        var res = await _dictionaryUnitOfWork.CommitAsync();
+        return res > 0;
+    }
+
+    public async Task<bool> CopyAnyDictionaryElementsFromDictionaryAsync(IEnumerable<int> ids, int toDictionaryId)
+    {
+        ArgumentNullException.ThrowIfNull(ids, nameof(ids));
+        ArgumentOutOfRangeException.ThrowIfNegativeOrZero(toDictionaryId, nameof(toDictionaryId));
+        
+        var elements = await _dictionaryUnitOfWork.DictionaryElementRepository.GetAnyAsync(ids);
+        var mappedElements = elements.Select(a => a.ToDictionaryElementModelBase());
+        await _dictionaryUnitOfWork.DictionaryElementRepository.AddRangeAsync(mappedElements, toDictionaryId);
+        var res = await _dictionaryUnitOfWork.CommitAsync();
+        return res > 0;
+    }
+
+    public async Task<bool> CopyDictionaryElementByIdFromDictionaryAsync(int id, int toDictionaryId)
+    {
+        ArgumentOutOfRangeException.ThrowIfNegativeOrZero(id, nameof(id));
+        ArgumentOutOfRangeException.ThrowIfNegativeOrZero(toDictionaryId, nameof(toDictionaryId));
+
+        var element = await _dictionaryUnitOfWork.DictionaryElementRepository.GetByIdAsync(id);
+        if (element is null) return false; // ошибка
+
+        await _dictionaryUnitOfWork.DictionaryElementRepository.AddAsync(element.ToDictionaryElementModelBase(), toDictionaryId);
+        var res = await _dictionaryUnitOfWork.CommitAsync();
+        return res > 0;
+    }
+    
+    public async Task<bool> MoveAllDictionaryElementsFromDictionaryAsync(int fromDictionaryId, int toDictionaryId)
+    {
+        ArgumentOutOfRangeException.ThrowIfNegativeOrZero(fromDictionaryId, nameof(fromDictionaryId));
+        ArgumentOutOfRangeException.ThrowIfNegativeOrZero(toDictionaryId, nameof(toDictionaryId));
+
+        var dictionary = await _dictionaryUnitOfWork.DictionaryRepository.GetByIdAsync(fromDictionaryId);
+        var elements = dictionary?.Elements;
+        if (elements is null) return false; // ошибка
+
+        var elementsList = elements.ToList();
+        await _dictionaryUnitOfWork.DictionaryElementRepository.AddRangeAsync(elementsList, toDictionaryId);
+
+        var elementIds = elementsList
+            .Select(a => a.Id)
+            .Where(b => b.HasValue)
+            .Select(c => c!.Value)
+            .ToList();
+        await _dictionaryUnitOfWork.DictionaryElementRepository.DeleteAnyAsync(elementIds);
+        var res = await _dictionaryUnitOfWork.CommitAsync();
+        return res > 0;
+    }
+
+    public async Task<bool> MoveAnyDictionaryElementsFromDictionaryAsync(IEnumerable<int> ids, int toDictionaryId)
+    {
+        ArgumentNullException.ThrowIfNull(ids, nameof(ids));
+        ArgumentOutOfRangeException.ThrowIfNegativeOrZero(toDictionaryId, nameof(toDictionaryId));
+
+        var elements = await _dictionaryUnitOfWork.DictionaryElementRepository.GetAnyAsync(ids);
+        var mappedElements = elements.Select(a => a.ToDictionaryElementModelBase());
+        await _dictionaryUnitOfWork.DictionaryElementRepository.AddRangeAsync(mappedElements, toDictionaryId);
+        var res = await _dictionaryUnitOfWork.CommitAsync();
+        return res > 0;
+    }
+
+    public async Task<bool> MoveDictionaryElementByIdFromDictionaryAsync(int id, int toDictionaryId)
+    {
+        ArgumentOutOfRangeException.ThrowIfNegativeOrZero(id, nameof(id));
+        ArgumentOutOfRangeException.ThrowIfNegativeOrZero(toDictionaryId, nameof(toDictionaryId));
+
+        var element = await _dictionaryUnitOfWork.DictionaryElementRepository.GetByIdAsync(id);
+        if (element is null) return false; // ошибка
+        await _dictionaryUnitOfWork.DictionaryElementRepository.AddAsync(element.ToDictionaryElementModelBase(), toDictionaryId);
+        var res = await _dictionaryUnitOfWork.CommitAsync();
+        return res > 0;
+    }
+}

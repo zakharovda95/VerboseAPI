@@ -3,7 +3,7 @@ using DataAccessLayer.Enums;
 namespace DataAccessLayer.Entities;
 
 /// <summary>
-/// Базовые поля сущностей (обязательны во всех таблицах)
+/// Базовые поля EF сущностей (обязательны во всех таблицах).
 /// </summary>
 public class BaseEntity
 {

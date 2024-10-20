@@ -19,14 +19,14 @@ public class DictionaryController : ControllerBase
     [Route("/[controller]/add")]
     public async Task<ActionResult> AddDictionary(DictionaryModelBase body)
     {
-        ArgumentNullException.ThrowIfNull(body);
-        var (_, title, description, items ) = body;
-        
-        if (string.IsNullOrEmpty(title) || string.IsNullOrEmpty(description)) 
-            return BadRequest("Не переданы обязательные параметры");
-
-        var res = await _dictionaryService!.CreateAsync(body);
-        if (!res) return BadRequest("Не удалось добавить словарь");
+        // ArgumentNullException.ThrowIfNull(body);
+        // var (_, title, description, items ) = body;
+        //
+        // if (string.IsNullOrEmpty(title) || string.IsNullOrEmpty(description)) 
+        //     return BadRequest("Не переданы обязательные параметры");
+        //
+        // var res = await _dictionaryService!.CreateAsync(body);
+        // if (!res) return BadRequest("Не удалось добавить словарь");
         return Ok("Успех!");
     }
 }

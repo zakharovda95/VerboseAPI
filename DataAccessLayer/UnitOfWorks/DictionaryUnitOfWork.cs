@@ -5,6 +5,9 @@ using DomainLayer.Models.DictionaryModels;
 
 namespace DataAccessLayer.UnitOfWorks;
 
+/// <summary>
+/// UoW словарей
+/// </summary>
 public class DictionaryUnitOfWork : IDictionaryUnitOfWork
 {
     private readonly AppDbContext _dbContext;

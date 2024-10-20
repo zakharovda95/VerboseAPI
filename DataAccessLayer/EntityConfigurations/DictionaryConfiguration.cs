@@ -5,6 +5,9 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace DataAccessLayer.EntityConfigurations;
 
+/// <summary>
+/// Конфигурация сущности словаря.
+/// </summary>
 internal class DictionaryConfiguration() : 
     BaseEntityConfiguration<DictionaryEntity>(TableNameEnum.Dictionary.GetTableName())
 {

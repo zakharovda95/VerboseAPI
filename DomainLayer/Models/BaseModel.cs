@@ -2,8 +2,7 @@ namespace DomainLayer.Models;
 
 /// <summary>
 /// Базовая модель.
-/// Включает:
-///  - мета-данные
+/// Включает: мета-данные.
 /// </summary>
 public class BaseModel
 {

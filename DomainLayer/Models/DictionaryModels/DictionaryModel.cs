@@ -2,10 +2,10 @@ namespace DomainLayer.Models.DictionaryModels;
 
 /// <summary>
 /// Базовая модель словаря.
-/// Включает:
-///  - мета-данные словаря
-///  - основную информацию элементов словаря
-///  - методы преобразования к типам [DictionaryModelBase], [DictionaryModelInfo]
+/// Включает: 
+/// мета-данные словаря, 
+/// основную информацию элементов словаря, 
+/// методы преобразования к типам [DictionaryModelBase], [DictionaryModelInfo].
 /// </summary>
 public class DictionaryModel : BaseModel
 {
@@ -14,7 +14,7 @@ public class DictionaryModel : BaseModel
     public IEnumerable<DictionaryElementModelBase>? Elements { get; init; }
 
     /// <summary>
-    /// Приводит к [DictionaryModelBase]
+    /// Привести к [DictionaryModelBase].
     /// </summary>
     public DictionaryModelBase ToDictionaryModelBase()
     {
@@ -28,7 +28,7 @@ public class DictionaryModel : BaseModel
     }
     
     /// <summary>
-    /// Приводит к [DictionaryModelInfo]
+    /// Привести к [DictionaryModelInfo].
     /// </summary>
     public DictionaryModelInfo ToDictionaryModelInfo()
     {
@@ -61,10 +61,10 @@ public class DictionaryModel : BaseModel
 
 /// <summary>
 /// Основные данные словаря.
-/// Включает:
-///  - основную информацию словаря (без мета-данных)
-///  - основную информацию элементов словаря
-/// Применяется для создания / чтения словаря
+/// Включает: 
+///  основную информацию словаря (без мета-данных), 
+///  основную информацию элементов словаря.
+/// Применяется для создания / чтения словаря.
 /// </summary>
 public class DictionaryModelBase
 {
@@ -88,9 +88,9 @@ public class DictionaryModelBase
 
 /// <summary>
 /// Информация о словаре.
-/// Включает:
-///  - мета-данные словаря
-///  - основную информацию словаря (без информации элементов словаря)
+/// Включает: 
+///  мета-данные словаря, 
+///  основную информацию словаря (без информации элементов словаря).
 /// </summary>
 public class DictionaryModelInfo : BaseModel
 {

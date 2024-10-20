@@ -2,10 +2,10 @@ namespace DomainLayer.Models.DictionaryModels;
 
 /// <summary>
 /// Базовая модель элемента словаря.
-/// Включает:
-///  - мета-данные элемента словаря
-///  - основную информацию элемента словаря
-///  - метод преобразования к [DictionaryElementModelBase]
+/// Включает: 
+///  мета-данные элемента словаря, 
+///  основную информацию элемента словаря, 
+///  метод преобразования к [DictionaryElementModelBase].
 /// </summary>
 public class DictionaryElementModel : BaseModel
 {
@@ -13,7 +13,7 @@ public class DictionaryElementModel : BaseModel
     public int Value { get; init; }
 
     /// <summary>
-    /// Приводит к [DictionaryElementModelBase]
+    /// Привести к [DictionaryElementModelBase].
     /// </summary>
     public DictionaryElementModelBase ToDictionaryElementModelBase()
     {
@@ -41,8 +41,8 @@ public class DictionaryElementModel : BaseModel
 
 /// <summary>
 /// Основные данные элемента словаря.
-/// Включает:
-///  - основную информацию элемента словаря (без мета-данных)
+/// Включает: 
+///  основную информацию элемента словаря (без мета-данных).
 /// </summary>
 public class DictionaryElementModelBase
 {
