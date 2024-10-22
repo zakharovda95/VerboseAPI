@@ -4,6 +4,7 @@ using DataAccessLayer.Entities.DictionaryEntities;
 using DomainLayer.Interfaces.Repositories;
 using DomainLayer.Models.DictionaryModels;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace DataAccessLayer.Repositories.DictionaryRepositories;
 
@@ -14,14 +15,17 @@ public class DictionaryElementRepository : IRepository<DictionaryElementModel, D
 {
     private readonly AppDbContext _dbContext;
     private readonly IMapper _mapper;
+    private readonly ILogger<DictionaryElementRepository> _logger;
 
-    public DictionaryElementRepository(AppDbContext dbContext, IMapper mapper)
+    public DictionaryElementRepository(AppDbContext dbContext, IMapper mapper, ILogger<DictionaryElementRepository> logger)
     {
         ArgumentNullException.ThrowIfNull(dbContext, nameof(dbContext));
         ArgumentNullException.ThrowIfNull(mapper, nameof(mapper));
+        ArgumentNullException.ThrowIfNull(logger, nameof(logger));
 
         _dbContext = dbContext;
         _mapper = mapper;
+        _logger = logger;
     }
 
     /// <summary>
@@ -31,14 +35,22 @@ public class DictionaryElementRepository : IRepository<DictionaryElementModel, D
     /// <param name="toId">Id словаря</param>
     public async Task AddAsync(DictionaryElementModelBase data, int? toId)
     {
-        ArgumentNullException.ThrowIfNull(data, nameof(data));
-        ArgumentNullException.ThrowIfNull(toId, nameof(toId));
-        ArgumentOutOfRangeException.ThrowIfNegativeOrZero((int)toId, nameof(toId));
+        try
+        {
+            ArgumentNullException.ThrowIfNull(data, nameof(data));
+            ArgumentNullException.ThrowIfNull(toId, nameof(toId));
+            ArgumentOutOfRangeException.ThrowIfNegativeOrZero((int)toId, nameof(toId));
 
-        var mappedData = _mapper.Map<DictionaryElementEntity>(data);
-        var dictionary = await _dbContext.Dictionaries.FirstOrDefaultAsync(a => a.Id == toId);
-        if (dictionary is null) return; // ошибку
-        dictionary.Elements.Add(mappedData);
+            var mappedData = _mapper.Map<DictionaryElementEntity>(data);
+            var dictionary = await _dbContext.Dictionaries.FirstOrDefaultAsync(a => a.Id == toId);
+            if (dictionary is null) return; // ошибку
+            dictionary.Elements.Add(mappedData);
+        }
+        catch (Exception e)
+        {
+            _logger.LogError(e, "Метод: {@Method}; Параметры: data: {@Data}, toId: {@ToId}", nameof(AddAsync), data, toId);
+            throw;
+        }
     }
     
     /// <summary>
@@ -48,14 +60,22 @@ public class DictionaryElementRepository : IRepository<DictionaryElementModel, D
     /// <param name="toId">Id словаря</param>
     public async Task AddRangeAsync(IEnumerable<DictionaryElementModelBase> data, int? toId)
     {
-        ArgumentNullException.ThrowIfNull(data, nameof(data));
-        ArgumentNullException.ThrowIfNull(toId, nameof(toId));
-        ArgumentOutOfRangeException.ThrowIfNegativeOrZero((int)toId, nameof(toId));
+        try
+        {
+            ArgumentNullException.ThrowIfNull(data, nameof(data));
+            ArgumentNullException.ThrowIfNull(toId, nameof(toId));
+            ArgumentOutOfRangeException.ThrowIfNegativeOrZero((int)toId, nameof(toId));
 
-        var mappedData = data.Select(a => _mapper.Map<DictionaryElementEntity>(a));
-        var dictionary = await _dbContext.Dictionaries.FirstOrDefaultAsync(a => a.Id == toId);
-        if (dictionary is null) return; // ошибку
-        dictionary.Elements.AddRange(mappedData);
+            var mappedData = data.Select(a => _mapper.Map<DictionaryElementEntity>(a));
+            var dictionary = await _dbContext.Dictionaries.FirstOrDefaultAsync(a => a.Id == toId);
+            if (dictionary is null) return; // ошибку
+            dictionary.Elements.AddRange(mappedData);
+        }
+        catch (Exception e)
+        {
+            _logger.LogError(e, "Метод: {@Method}; Параметры: data: {@Data}, toId: {@ToId}", nameof(AddAsync), data, toId);
+            throw;
+        }
     }
 
     /// <summary>
@@ -64,8 +84,16 @@ public class DictionaryElementRepository : IRepository<DictionaryElementModel, D
     /// <returns>Элементы словарей</returns>
     public async Task<IEnumerable<DictionaryElementModel>> GetAllAsync()
     {
-        var elements = await _dbContext.DictionaryElements.ToListAsync();
-        return elements.Select(a => _mapper.Map<DictionaryElementModel>(a));
+        try
+        {
+            var elements = await _dbContext.DictionaryElements.ToListAsync();
+            return elements.Select(a => _mapper.Map<DictionaryElementModel>(a));
+        }
+        catch (Exception e)
+        {
+            _logger.LogError(e, "Метод: {@Method}; Параметры: нет", nameof(AddAsync));
+            throw;
+        }
     }
     
     /// <summary>
@@ -74,13 +102,21 @@ public class DictionaryElementRepository : IRepository<DictionaryElementModel, D
     /// <param name="ids">Массив ID элементов словаря</param>
     public async Task<IEnumerable<DictionaryElementModel>> GetAnyAsync(IEnumerable<int> ids)
     {
-        ArgumentNullException.ThrowIfNull(ids, nameof(ids));
+        try
+        {
+            ArgumentNullException.ThrowIfNull(ids, nameof(ids));
         
-        var elements = await _dbContext.DictionaryElements
-            .Where(a => ids.Contains(a.Id))
-            .ToListAsync();
+            var elements = await _dbContext.DictionaryElements
+                .Where(a => ids.Contains(a.Id))
+                .ToListAsync();
 
-        return elements.Select(a => _mapper.Map<DictionaryElementModel>(a));
+            return elements.Select(a => _mapper.Map<DictionaryElementModel>(a));
+        }
+        catch (Exception e)
+        {
+            _logger.LogError(e, "Метод: {@Method}; Параметры: ids: {@Ids}", nameof(AddAsync), ids);
+            throw;
+        }
     }
 
     /// <summary>
@@ -90,12 +126,20 @@ public class DictionaryElementRepository : IRepository<DictionaryElementModel, D
     /// <returns>Элемент словаря</returns>
     public async Task<DictionaryElementModel?> GetByIdAsync(int id)
     {
-        ArgumentOutOfRangeException.ThrowIfNegativeOrZero(id, nameof(id));
+        try
+        {
+            ArgumentOutOfRangeException.ThrowIfNegativeOrZero(id, nameof(id));
 
-        var element = await _dbContext.DictionaryElements.FirstOrDefaultAsync(a => a.Id == id);
-        if (element is null || element.Id <= 0) return null;
+            var element = await _dbContext.DictionaryElements.FirstOrDefaultAsync(a => a.Id == id);
+            if (element is null || element.Id <= 0) return null;
 
-        return _mapper.Map<DictionaryElementModel>(element);
+            return _mapper.Map<DictionaryElementModel>(element);
+        }
+        catch (Exception e)
+        {
+            _logger.LogError(e, "Метод: {@Method}; Параметры: id: {@Id}", nameof(AddAsync), id);
+            throw;
+        }
     }
 
     /// <summary>
@@ -105,15 +149,23 @@ public class DictionaryElementRepository : IRepository<DictionaryElementModel, D
     /// <param name="newData">Новые данные элемента словаря</param>
     public async Task UpdateAsync(int id, DictionaryElementModelBase newData)
     {
-        ArgumentOutOfRangeException.ThrowIfNegativeOrZero(id, nameof(id));
-        ArgumentNullException.ThrowIfNull(newData, nameof(newData));
+        try
+        {
+            ArgumentOutOfRangeException.ThrowIfNegativeOrZero(id, nameof(id));
+            ArgumentNullException.ThrowIfNull(newData, nameof(newData));
 
-        var element = await _dbContext.DictionaryElements.FirstOrDefaultAsync(a => a.Id == id);
-        if (element is null || element.Id <= 0) return;
+            var element = await _dbContext.DictionaryElements.FirstOrDefaultAsync(a => a.Id == id);
+            if (element is null || element.Id <= 0) return;
 
-        element.LastUpdate = DateTime.Now;
-        element.Title = newData.Title;
-        element.Value = newData.Value;
+            element.LastUpdate = DateTime.Now;
+            element.Title = newData.Title;
+            element.Value = newData.Value;
+        }
+        catch (Exception e)
+        {
+            _logger.LogError(e, "Метод: {@Method}; Параметры: id: {@Id}, newData: {@NewData}", nameof(AddAsync), id, newData);
+            throw;
+        }
     }
 
     /// <summary>
@@ -121,9 +173,17 @@ public class DictionaryElementRepository : IRepository<DictionaryElementModel, D
     /// </summary>
     public async Task DeleteAllAsync()
     {
-        var elements = await _dbContext.DictionaryElements.ToListAsync();
-        if (elements.Count <= 0) return; // добавить ошибку
-        _dbContext.DictionaryElements.RemoveRange(elements);
+        try
+        {
+            var elements = await _dbContext.DictionaryElements.ToListAsync();
+            if (elements.Count <= 0) return; // добавить ошибку
+            _dbContext.DictionaryElements.RemoveRange(elements);
+        }
+        catch (Exception e)
+        {
+            _logger.LogError(e, "Метод: {@Method}; Параметры: нет", nameof(AddAsync));
+            throw;
+        }
     }
     
     /// <summary>
@@ -132,13 +192,21 @@ public class DictionaryElementRepository : IRepository<DictionaryElementModel, D
     /// <param name="ids">Массив ID элементов словаря</param>
     public async Task DeleteAnyAsync(IEnumerable<int> ids)
     {
-        ArgumentNullException.ThrowIfNull(ids, nameof(ids));
+        try
+        {
+            ArgumentNullException.ThrowIfNull(ids, nameof(ids));
         
-        var elementsForDeleting = await _dbContext.DictionaryElements
-            .Where(a => ids.Contains(a.Id))
-            .ToListAsync();
-        if (elementsForDeleting.Count <= 0) return; // добавить ошибку
-        _dbContext.DictionaryElements.RemoveRange(elementsForDeleting);
+            var elementsForDeleting = await _dbContext.DictionaryElements
+                .Where(a => ids.Contains(a.Id))
+                .ToListAsync();
+            if (elementsForDeleting.Count <= 0) return; // добавить ошибку
+            _dbContext.DictionaryElements.RemoveRange(elementsForDeleting);
+        }
+        catch (Exception e)
+        {
+            _logger.LogError(e, "Метод: {@Method}; Параметры: ids: {@Ids}", nameof(AddAsync), ids);
+            throw;
+        }
     }
 
     /// <summary>
@@ -147,11 +215,19 @@ public class DictionaryElementRepository : IRepository<DictionaryElementModel, D
     /// <param name="id">Id элемента словаря</param>
     public async Task DeleteByIdAsync(int id)
     {
-        ArgumentOutOfRangeException.ThrowIfZero(id, nameof(id));
+        try
+        {
+            ArgumentOutOfRangeException.ThrowIfZero(id, nameof(id));
 
-        var element = await _dbContext.DictionaryElements.FirstOrDefaultAsync(a => a.Id == id);
-        if (element is null || element.Id <= 0) return;
+            var element = await _dbContext.DictionaryElements.FirstOrDefaultAsync(a => a.Id == id);
+            if (element is null || element.Id <= 0) return;
 
-        _dbContext.DictionaryElements.Remove(element);
+            _dbContext.DictionaryElements.Remove(element);
+        }
+        catch (Exception e)
+        {
+            _logger.LogError(e, "Метод: {@Method}; Параметры: id: {@Id}", nameof(AddAsync), id);
+            throw;
+        }
     }
 }
