@@ -73,7 +73,7 @@ public class DictionaryElementRepository : IRepository<DictionaryElementModel, D
         }
         catch (Exception e)
         {
-            _logger.LogError(e, "Метод: {@Method}; Параметры: data: {@Data}, toId: {@ToId}", nameof(AddAsync), data, toId);
+            _logger.LogError(e, "Метод: {@Method}; Параметры: data: {@Data}, toId: {@ToId}", nameof(AddRangeAsync), data, toId);
             throw;
         }
     }
@@ -91,7 +91,7 @@ public class DictionaryElementRepository : IRepository<DictionaryElementModel, D
         }
         catch (Exception e)
         {
-            _logger.LogError(e, "Метод: {@Method}; Параметры: нет", nameof(AddAsync));
+            _logger.LogError(e, "Метод: {@Method}; Параметры: нет", nameof(GetAllAsync));
             throw;
         }
     }
@@ -114,7 +114,7 @@ public class DictionaryElementRepository : IRepository<DictionaryElementModel, D
         }
         catch (Exception e)
         {
-            _logger.LogError(e, "Метод: {@Method}; Параметры: ids: {@Ids}", nameof(AddAsync), ids);
+            _logger.LogError(e, "Метод: {@Method}; Параметры: ids: {@Ids}", nameof(GetAnyAsync), ids);
             throw;
         }
     }
@@ -137,7 +137,7 @@ public class DictionaryElementRepository : IRepository<DictionaryElementModel, D
         }
         catch (Exception e)
         {
-            _logger.LogError(e, "Метод: {@Method}; Параметры: id: {@Id}", nameof(AddAsync), id);
+            _logger.LogError(e, "Метод: {@Method}; Параметры: id: {@Id}", nameof(GetByIdAsync), id);
             throw;
         }
     }
@@ -163,7 +163,7 @@ public class DictionaryElementRepository : IRepository<DictionaryElementModel, D
         }
         catch (Exception e)
         {
-            _logger.LogError(e, "Метод: {@Method}; Параметры: id: {@Id}, newData: {@NewData}", nameof(AddAsync), id, newData);
+            _logger.LogError(e, "Метод: {@Method}; Параметры: id: {@Id}, newData: {@NewData}", nameof(UpdateAsync), id, newData);
             throw;
         }
     }
@@ -181,7 +181,7 @@ public class DictionaryElementRepository : IRepository<DictionaryElementModel, D
         }
         catch (Exception e)
         {
-            _logger.LogError(e, "Метод: {@Method}; Параметры: нет", nameof(AddAsync));
+            _logger.LogError(e, "Метод: {@Method}; Параметры: нет", nameof(DeleteAllAsync));
             throw;
         }
     }
@@ -204,7 +204,7 @@ public class DictionaryElementRepository : IRepository<DictionaryElementModel, D
         }
         catch (Exception e)
         {
-            _logger.LogError(e, "Метод: {@Method}; Параметры: ids: {@Ids}", nameof(AddAsync), ids);
+            _logger.LogError(e, "Метод: {@Method}; Параметры: ids: {@Ids}", nameof(DeleteAnyAsync), ids);
             throw;
         }
     }
@@ -226,7 +226,7 @@ public class DictionaryElementRepository : IRepository<DictionaryElementModel, D
         }
         catch (Exception e)
         {
-            _logger.LogError(e, "Метод: {@Method}; Параметры: id: {@Id}", nameof(AddAsync), id);
+            _logger.LogError(e, "Метод: {@Method}; Параметры: id: {@Id}", nameof(DeleteByIdAsync), id);
             throw;
         }
     }

@@ -8,7 +8,7 @@ namespace DataAccessLayer.UnitOfWorks;
 /// <summary>
 /// UoW словарей
 /// </summary>
-public class DictionaryUnitOfWork : IDictionaryUnitOfWork
+public class DictionaryUnitOfWork : IDictionaryUnitOfWork, IDisposable, IAsyncDisposable
 {
     private readonly AppDbContext _dbContext;
     
@@ -32,5 +32,15 @@ public class DictionaryUnitOfWork : IDictionaryUnitOfWork
     public async Task<int> CommitAsync()
     {
         return await _dbContext.SaveChangesAsync();
+    }
+
+    public void Dispose()
+    {
+        _dbContext.Dispose();
+    }
+
+    public async ValueTask DisposeAsync()
+    {
+        await _dbContext.DisposeAsync();
     }
 }

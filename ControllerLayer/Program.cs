@@ -6,24 +6,15 @@ using DomainLayer.Interfaces.Repositories;
 using DomainLayer.Interfaces.Services;
 using DomainLayer.Interfaces.UnitOfWorks;
 using DomainLayer.Models.DictionaryModels;
-using Karambolo.Extensions.Logging.File;
+using DomainLayer.Services;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Настройка логирования
 builder.Logging.ClearProviders();
-builder.Logging.AddFile(options =>
-{
-    options.RootPath = "Logs";
-    options.BasePath = "Logs/log-{Date}.log";
-    options.MaxFileSize = 10 * 1024 * 1024;
-    options.FileAccessMode = LogFileAccessMode.KeepOpenAndAutoFlush;
-    options.CounterFormat = "00";
-    options.FileEncodingName = "utf-8";
-    options.DateFormat = "dd.MM.yyyy";
-    options.IncludeScopes = true;
-});
+builder.Logging.AddConfiguration(builder.Configuration.GetSection("Logging"));
+builder.Logging.AddFile(options => builder.Configuration.GetSection("Logging.File").Bind(options));
 
 if (builder.Environment.IsDevelopment())
 {
@@ -45,15 +36,15 @@ builder.Services.AddAutoMapper(
     typeof(DictionaryElementAutoMapperProfile));
 
 // Репозитории
-builder.Services.AddTransient<IRepository<DictionaryModel, DictionaryModelBase>, DictionaryRepository>();
-builder.Services.AddTransient<IRepository<DictionaryElementModel, DictionaryElementModelBase>, DictionaryElementRepository>();
+builder.Services.AddScoped<IRepository<DictionaryModel, DictionaryModelBase>, DictionaryRepository>();
+builder.Services.AddScoped<IRepository<DictionaryElementModel, DictionaryElementModelBase>, DictionaryElementRepository>();
 
 // UnitOfWorks
 builder.Services.AddScoped<IDictionaryUnitOfWork, DictionaryUnitOfWork>();
 
 // Сервисы
-// builder.Services.AddTransient<IDictionaryService, DictionaryService>();
-// builder.Services.AddTransient<IDictionaryElementService, DictionaryElementService>();
+builder.Services.AddScoped<IDictionaryService, DictionaryService>();
+builder.Services.AddScoped<IDictionaryElementService, DictionaryElementService>();
 
 builder.Services.AddControllers();
 builder.Services.AddSwaggerGen();
