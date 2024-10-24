@@ -8,9 +8,10 @@ namespace DataAccessLayer.UnitOfWorks;
 /// <summary>
 /// UoW словарей
 /// </summary>
-public class DictionaryUnitOfWork : IDictionaryUnitOfWork, IDisposable, IAsyncDisposable
+public class DictionaryUnitOfWork : IDictionaryUnitOfWork, IAsyncDisposable
 {
     private readonly AppDbContext _dbContext;
+    private bool _disposed = false;
     
     public DictionaryUnitOfWork(
         AppDbContext appDbContext,
@@ -34,13 +35,18 @@ public class DictionaryUnitOfWork : IDictionaryUnitOfWork, IDisposable, IAsyncDi
         return await _dbContext.SaveChangesAsync();
     }
 
-    public void Dispose()
+    protected virtual async ValueTask DisposeAsyncCore()
     {
-        _dbContext.Dispose();
+        if (!_disposed)
+        {
+            await _dbContext.DisposeAsync();
+            _disposed = true;
+        }
     }
 
     public async ValueTask DisposeAsync()
     {
-        await _dbContext.DisposeAsync();
+        await DisposeAsyncCore();
+        GC.SuppressFinalize(this);
     }
 }
