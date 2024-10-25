@@ -291,3 +291,5 @@ __pycache__/
 .DS_Store
 
 appsettings.*.json
+
+DataAccessLayer/Database/SqlLight
